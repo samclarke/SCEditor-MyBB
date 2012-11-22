@@ -1,0 +1,149 @@
+{
+	"build_systems":
+	[
+		{
+			"cmd":
+			[
+				"build.sh"
+			],
+			"name": "SCEditor - MyBB plugin - Build ZIP"
+		}
+	],
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"config_attachment_types.lang.php",
+				"config_badwords.lang.php",
+				"config_banning.lang.php",
+				"config_calendars.lang.php",
+				"config_help_documents.lang.php",
+				"config_languages.lang.php",
+				"config_mod_tools.lang.php",
+				"config_module_meta.lang.php",
+				"config_mycode.lang.php",
+				"config_plugins.lang.php",
+				"config_post_icons.lang.php",
+				"config_profile_fields.lang.php",
+				"config_settings.lang.php",
+				"config_smilies.lang.php",
+				"config_spiders.lang.php",
+				"config_thread_prefixes.lang.php",
+				"config_warning.lang.php",
+				"forum_akismet.lang.php",
+				"forum_announcements.lang.php",
+				"forum_attachments.lang.php",
+				"forum_management.lang.php",
+				"forum_moderation_queue.lang.php",
+				"forum_module_meta.lang.php",
+				"global.lang.php",
+				"home_credits.lang.php",
+				"home_dashboard.lang.php",
+				"home_module_meta.lang.php",
+				"home_preferences.lang.php",
+				"home_version_check.lang.php",
+				"index.html",
+				"style_module_meta.lang.php",
+				"style_templates.lang.php",
+				"style_themes.lang.php",
+				"tools_adminlog.lang.php",
+				"tools_backupdb.lang.php",
+				"tools_cache.lang.php",
+				"tools_file_verification.lang.php",
+				"tools_mailerrors.lang.php",
+				"tools_maillogs.lang.php",
+				"tools_modlog.lang.php",
+				"tools_module_meta.lang.php",
+				"tools_optimizedb.lang.php",
+				"tools_php_info.lang.php",
+				"tools_recount_rebuild.lang.php",
+				"tools_statistics.lang.php",
+				"tools_system_health.lang.php",
+				"tools_tasks.lang.php",
+				"tools_warninglog.lang.php",
+				"user_admin_permissions.lang.php",
+				"user_banning.lang.php",
+				"user_group_promotions.lang.php",
+				"user_groups.lang.php",
+				"user_mass_mail.lang.php",
+				"user_module_meta.lang.php",
+				"user_titles.lang.php",
+				"user_users.lang.php"
+			],
+			"name": "Language",
+			"path": "inc/languages/english/admin"
+		},
+		{
+			"file_exclude_patterns":
+			[
+				"akismet.php",
+				"hello.php",
+				"index.html"
+			],
+			"name": "Plugin",
+			"path": "inc/plugins"
+		},
+		{
+			"name": "JavaScript",
+			"path": "jscripts/sceditor"
+		},
+		{
+			"name": "ZIP",
+			"path": "zip"
+		},
+		{
+			"file_exclude_patterns":
+			[
+				"announcements.php",
+				"attachment.php",
+				"calendar.php",
+				"captcha.php",
+				"css.php",
+				"editpost.php",
+				"forumdisplay.php",
+				"global.php",
+				"htaccess.txt",
+				"index.php",
+				"managegroup.php",
+				"member.php",
+				"memberlist.php",
+				"misc.php",
+				"modcp.php",
+				"moderation.php",
+				"newreply.php",
+				"newthread.php",
+				"online.php",
+				"polls.php",
+				"portal.php",
+				"printthread.php",
+				"private.php",
+				"ratethread.php",
+				"report.php",
+				"reputation.php",
+				"rss.php",
+				"search.php",
+				"sendthread.php",
+				"showteam.php",
+				"showthread.php",
+				"stats.php",
+				"syndication.php",
+				"task.php",
+				"usercp.php",
+				"usercp2.php",
+				"warnings.php",
+				"xmlhttp.php"
+			],
+			"folder_exclude_patterns":
+			[
+				""
+			],
+			"name": "Build",
+			"path": "/home/samclarke/public_html/Classes/SCEditor-mybb"
+		}
+	],
+	"settings":
+	{
+		"tab_size": 8
+	}
+}

@@ -1,0 +1,21 @@
+# Ignore all files apart from sub directories
+*
+!*/
+
+# This file
+!.gitignore
+
+# Language files
+!inc/languages/english/admin/config_sceditor.lang.php
+
+# Plugin files
+!inc/plugins/sceditor.php
+
+# JavaScript
+!jscripts/sceditor/*
+!jscripts/sceditor/*/*
+
+# Build and sublime text files
+!build.sh
+!mybb-plugin.sublime-project
+!mybb-plugin.sublime-workspace
