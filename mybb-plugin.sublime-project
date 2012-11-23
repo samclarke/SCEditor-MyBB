@@ -4,8 +4,9 @@
 		{
 			"cmd":
 			[
-				"build.sh"
+				"${project_path}/build.sh"
 			],
+			"shell": true,
 			"name": "SCEditor - MyBB plugin - Build ZIP"
 		}
 	],
