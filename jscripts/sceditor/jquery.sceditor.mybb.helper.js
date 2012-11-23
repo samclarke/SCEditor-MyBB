@@ -168,7 +168,7 @@ if(typeof Thread !== "undefined")
 		var editor = jQuery("#message, #signature").data("sceditor");
 
 		if(editor)
-			editor.updateTextareaValue();
+			editor.updateOriginal();
 
 		return quickReplyFunc.call(Thread, e);
 	};

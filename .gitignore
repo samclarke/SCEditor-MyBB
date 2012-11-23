@@ -17,5 +17,5 @@
 
 # Build and sublime text files
 !build.sh
+!README.md
 !mybb-plugin.sublime-project
-!mybb-plugin.sublime-workspace
