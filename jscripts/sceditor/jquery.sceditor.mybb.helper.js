@@ -16,6 +16,11 @@ jQuery(document).ready(function($) {
 		.set("right", { format: "[align=right]{0}[/align]" })
 		.set("justify", { format: "[align=justify]{0}[/align]" });
 
+	$.sceditor.command
+		.set("center", { txtExec: ["[align=center]", "[/align]"] })
+		.set("left", { txtExec: ["[align=left]", "[/align]"] })
+		.set("right", { txtExec: ["[align=right]", "[/align]"] })
+		.set("justify", { txtExec: ["[align=justify]", "[/align]"] });
 
 
 	/************************************************
@@ -34,6 +39,10 @@ jQuery(document).ready(function($) {
 		.set("ol", { format: "[list=1]{0}[/list]" })
 		.set("li", { format: "[*]{0}", excludeClosing: true })
 		.set("*", { excludeClosing: true, isInline: false });
+
+	$.sceditor.command
+		.set("bulletlist", { txtExec: ["[list]\n[*]", "\n[/list]"] })
+		.set("orderedlist", { txtExec: ["[list=1]\n[*]", "\n[/list]"] });
 
 
 	/********************************************

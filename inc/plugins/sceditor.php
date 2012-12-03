@@ -4,7 +4,7 @@
  *
  * @author Sam Clarke
  * @created 22/06/12
- * @version 1.4.0
+ * @version 1.4.0.1
  * @contact sam@sceditor.com
  * @license GPL
  */
@@ -14,11 +14,10 @@
 if(!defined("IN_MYBB"))
 	die("You cannot directly access this file.");
 
-define('SCEDITOR_PLUGIN_VER', '1.4.0');
+define('SCEDITOR_PLUGIN_VER', '1.4.0.1');
 
 $plugins->add_hook("pre_output_page", "sceditor_load", 100);
 $plugins->add_hook("parse_message",   "sceditor_parse");
-$plugins->add_hook("newreply_end",    "sceditor_fix_quote");
 
 function sceditor_info()
 {
@@ -270,7 +269,7 @@ function sceditor_load($page)
 				return false;
 			break;
 		case "private.php":
-			if($mybb->input['action'] != "send" || !$mybb->settings['enablesceditor_pm'])
+			if(!$mybb->settings['enablesceditor_pm'])
 				return false;
 			break;
 		case "calendar.php":
@@ -353,12 +352,4 @@ function sceditor_parse($message)
 	$message = preg_replace("/\[font=([a-z0-9 ,\-_]+)](.*?)\[\/font\]/si", '<span style="font-family: $1">$2</span>', $message);
 
 	return $message;
-}
-
-function sceditor_fix_quote()
-{
-	global $message;
-
-	// remove newline after quote tag
-//	$message = preg_replace("/(\[quote=[^\]]+\])\r?\n?/i", '$1', $message);
 }
