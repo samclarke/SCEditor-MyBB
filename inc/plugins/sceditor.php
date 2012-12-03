@@ -187,6 +187,16 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
+	$db->insert_query("settings", array(
+		'name'		=> 'sceditor_excluded_themes',
+		'title'		=> $lang->sceditor_excluded_themes_title,
+		'description'	=> $lang->sceditor_excluded_themes_desc,
+		'optionscode'	=> "",
+		'value'		=> '',
+		'disporder'	=> '11',
+		'gid'		=> $groupid
+	));
+
 	rebuild_settings();
 }
 
@@ -239,9 +249,13 @@ function sceditor_deactivate()
 
 function sceditor_load($page)
 {
-	global $lang, $mybb, $cache;
+	global $lang, $mybb, $cache, $theme;
 
 	if(!$mybb->settings['enablesceditor'])
+		return false;
+
+	// check if editor should be enabled on this theme
+	if(strrpos("," . $mybb->settings['sceditor_excluded_themes'] . ",", "," . strtolower($theme['name']) . ",") !== false)
 		return false;
 
 	if(THIS_SCRIPT == "misc.php" && $mybb->input['action'] == "smilies")

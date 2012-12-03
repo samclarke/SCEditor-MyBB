@@ -25,10 +25,10 @@ $l['sceditor_theme_title']                    = "SCEditor theme";
 $l['sceditor_theme_desc']                     = "SCEditor theme to use.";
 
 $l['sceditor_include_jquery_title']           = "Include jQuery";
-$l['sceditor_include_jquery_desc']            = "If this plugin should include jQuery. Set to no if you or another plugin already include jQuery.";
+$l['sceditor_include_jquery_desc']            = "If this plugin should include jQuery. Set to no if you, or another plugin already include jQuery.";
 
 $l['sceditor_enable_jquery_noconflict_title'] = "Enable jQuery no conflict mode";
-$l['sceditor_enable_jquery_noconflict_desc']  = "If this plugin should enable jQuerys no conflict mode. Set to no if you or another plugin already use jQuery in normal mode.";
+$l['sceditor_enable_jquery_noconflict_desc']  = "If this plugin should enable jQuerys no conflict mode. Set to no if you, or another plugin already use jQuery in normal mode.";
 
 // Backslash in SCEditor\'s is required so it can be inserted into the DB
 $l['sceditor_lang_title']                     = "SCEditor language";
@@ -36,3 +36,6 @@ $l['sceditor_lang_desc']                      = "Language used for SCEditor\'s t
 
 $l['sceditor_enable_user_choice_title']       = "Allow users to enable/disable SCEditor";
 $l['sceditor_enable_user_choice_desc']        = "If to allow users to choose if they want to enable/disable SCEditor.";
+
+$l['sceditor_excluded_themes_title']          = "Exclude themes";
+$l['sceditor_excluded_themes_desc']           = "A comma seperated list of theme names to exclude the editor from. <strong>There should not be any spaces arround the themes name.</strong>";
