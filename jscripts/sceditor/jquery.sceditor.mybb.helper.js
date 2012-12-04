@@ -121,6 +121,15 @@ jQuery(document).ready(function($) {
 	});
 
 
+
+	/******************************
+	 * Source mode option support *
+	 ******************************/
+	if(sceditor_sourcemode)
+		$("#message, #signature").sceditor("instance").sourceMode(true);
+
+
+
 	/**************************
 	 * Emoticon click support *
 	 **************************/

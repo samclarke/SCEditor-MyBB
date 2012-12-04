@@ -72,8 +72,65 @@
 				"user_titles.lang.php",
 				"user_users.lang.php"
 			],
-			"name": "Language",
+			"name": "Admin Language",
 			"path": "inc/languages/english/admin"
+		},
+		{
+			"file_exclude_patterns":
+			[
+				"akismet.lang.php",
+				"announcements.lang.php",
+				"archive.lang.php",
+				"calendar.lang.php",
+				"customhelpdocs.lang.php",
+				"customhelpsections.lang.php",
+				"datahandler_event.lang.php",
+				"datahandler_pm.lang.php",
+				"datahandler_post.lang.php",
+				"datahandler_user.lang.php",
+				"editpost.lang.php",
+				"forumdisplay.lang.php",
+				"global.lang.php",
+				"helpdocs.lang.php",
+				"helpsections.lang.php",
+				"index.html",
+				"index.lang.php",
+				"mailhandler.lang.php",
+				"managegroup.lang.php",
+				"member.lang.php",
+				"memberlist.lang.php",
+				"messages.lang.php",
+				"misc.lang.php",
+				"modcp.lang.php",
+				"moderation.lang.php",
+				"newreply.lang.php",
+				"newthread.lang.php",
+				"online.lang.php",
+				"polls.lang.php",
+				"portal.lang.php",
+				"printthread.lang.php",
+				"private.lang.php",
+				"quickreplypm.lang.php",
+				"ratethread.lang.php",
+				"report.lang.php",
+				"reputation.lang.php",
+				"search.lang.php",
+				"sendthread.lang.php",
+				"showteam.lang.php",
+				"showthread.lang.php",
+				"stats.lang.php",
+				"syndication.lang.php",
+				"usercp.lang.php",
+				"usercpnav.lang.php",
+				"warnings.lang.php",
+				"xmlhttp.lang.php"
+			],
+			"folder_exclude_patterns":
+			[
+				""
+			],
+			"name": "Language",
+			"path": "inc/languages/english"
 		},
 		{
 			"file_exclude_patterns":

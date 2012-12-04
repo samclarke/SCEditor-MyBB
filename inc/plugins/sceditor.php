@@ -4,20 +4,21 @@
  *
  * @author Sam Clarke
  * @created 22/06/12
- * @version 1.4.0.1
+ * @version 1.4.0.2
  * @contact sam@sceditor.com
  * @license GPL
  */
 
-// TODO: Work out how to add user option to enable/disable the editor
-
 if(!defined("IN_MYBB"))
 	die("You cannot directly access this file.");
 
-define('SCEDITOR_PLUGIN_VER', '1.4.0.1');
+define('SCEDITOR_PLUGIN_VER', '1.4.0.2');
 
-$plugins->add_hook("pre_output_page", "sceditor_load", 100);
-$plugins->add_hook("parse_message",   "sceditor_parse");
+
+$plugins->add_hook("pre_output_page",         "sceditor_load", 100);
+$plugins->add_hook("parse_message",           "sceditor_parse");
+$plugins->add_hook("datahandler_user_update", "sceditor_usercp_update");
+$plugins->add_hook("usercp_options_end",      "sceditor_usercp_options");
 
 function sceditor_info()
 {
@@ -28,7 +29,7 @@ function sceditor_info()
 	return array(
 		"name"          => $lang->sceditor_title,
 		"description"   => $lang->sceditor_desc,
-		"website"       => "http://sceditor.samclarke.com",
+		"website"       => "http://www.sceditor.com/",
 		"author"        => "Sam Clarke",
 		"authorsite"    => "http://www.samclarke.com/",
 		"version"       => SCEDITOR_PLUGIN_VER,
@@ -43,10 +44,7 @@ function sceditor_install()
 
 	$lang->load('config_sceditor');
 
-	// clean up any old installation
-	sceditor_uninstall();
-
-	//$db->write_query('ALTER TABLE `'.TABLE_PREFIX.'users` ADD `sceditor_enable` INT(1) NOT NULL DEFAULT \'1\', ADD `sceditor_sourcemode` INT(1) NOT NULL DEFAULT \'0\';');
+	$db->write_query('ALTER TABLE `'.TABLE_PREFIX.'users` ADD `sceditor_enable` INT(1) NOT NULL DEFAULT \'1\', ADD `sceditor_sourcemode` INT(1) NOT NULL DEFAULT \'0\';');
 
 	$query  = $db->simple_select("settinggroups", "COUNT(*) as rows");
 	$dorder = $db->fetch_field($query, "rows") + 1;
@@ -154,16 +152,6 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
-/*	$db->insert_query("settings", array(
-		'name'		=> 'sceditor_enable_user_choice',
-		'title'		=> $lang->sceditor_enable_user_choice_title,
-		'description'	=> $lang->sceditor_enable_user_choice_desc,
-		'optionscode'	=> 'yesno',
-		'value'		=> '1',
-		'disporder'	=> '10',
-		'gid'		=> $groupid
-	));*/
-
 	$db->insert_query("settings", array(
 		'name'		=> 'sceditor_lang',
 		'title'		=> $lang->sceditor_lang_title,
@@ -197,6 +185,16 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
+	$db->insert_query("settings", array(
+		'name'		=> 'sceditor_enable_user_choice',
+		'title'		=> $lang->sceditor_enable_user_choice_title,
+		'description'	=> $lang->sceditor_enable_user_choice_desc,
+		'optionscode'	=> 'yesno',
+		'value'		=> '1',
+		'disporder'	=> '12',
+		'gid'		=> $groupid
+	));
+
 	rebuild_settings();
 }
 
@@ -205,7 +203,7 @@ function sceditor_is_installed()
 	global $db;
 
 	$query = $db->simple_select("settinggroups", "COUNT(*) as rows", "name = 'sceditor'");
-	$rows = $db->fetch_field($query, "rows");
+	$rows  = $db->fetch_field($query, "rows");
 
 	return ($rows > 0);
 }
@@ -213,8 +211,6 @@ function sceditor_is_installed()
 function sceditor_uninstall()
 {
 	global $db;
-
-	//$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` DROP `sceditor_enable`, DROP `sceditor_sourcemode`;");
 
 	$db->write_query("DELETE FROM ".TABLE_PREFIX."settings WHERE name IN(
 		'enablesceditor',
@@ -227,15 +223,32 @@ function sceditor_uninstall()
 	)");
 
 	$db->delete_query("settinggroups", "name = 'sceditor'");
+
+	$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` DROP `sceditor_enable`");
+	$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` DROP `sceditor_sourcemode`");
 }
 
 function sceditor_activate()
 {
+	include_once MYBB_ROOT."inc/adminfunctions_templates.php";
+
+	find_replace_templatesets(
+		'usercp_options',
+		'#<td valign="top" width="1"><input type="checkbox" class="checkbox" name="showcodebuttons" id="showcodebuttons" value="1" {\$showcodebuttonscheck} /></td>[\r\n]{1,2}<td><span class="smalltext"><label for="showcodebuttons">{\$lang->show_codebuttons}</label></span>#',
+		'{showeditorplaceholder}'
+	);
 }
 
 function sceditor_deactivate()
 {
 	include_once MYBB_ROOT."inc/adminfunctions_templates.php";
+
+	find_replace_templatesets(
+		'usercp_options',
+		'#{showeditorplaceholder}#',
+		'<td valign="top" width="1"><input type="checkbox" class="checkbox" name="showcodebuttons" id="showcodebuttons" value="1" {$showcodebuttonscheck} /></td>
+<td><span class="smalltext"><label for="showcodebuttons">{$lang->show_codebuttons}</label></span>'
+	);
 
 	// left to remove old versions, not needed anymore
 	find_replace_templatesets(
@@ -251,7 +264,7 @@ function sceditor_load($page)
 {
 	global $lang, $mybb, $cache, $theme;
 
-	if(!$mybb->settings['enablesceditor'])
+	if(!$mybb->settings['enablesceditor'] || !$mybb->user['sceditor_enable'])
 		return false;
 
 	// check if editor should be enabled on this theme
@@ -337,9 +350,10 @@ function sceditor_load($page)
 	$js = '	' . $jquery . '
 		<script>
 			' . $jqueryNoConflict  . '
-			var sceditor_lang      = "' . $sceditor_lang . '";
-			var mybb_emoticons     = ' . $mybb_emoticons . ';
-			var sceditor_autofocus = ' . $sceditor_autofocus . ';
+			var sceditor_lang       = "' . $sceditor_lang . '";
+			var mybb_emoticons      = ' . $mybb_emoticons . ';
+			var sceditor_autofocus  = ' . $sceditor_autofocus . ';
+			var sceditor_sourcemode = ' . $mybb->user['sceditor_sourcemode'] . ';
 		</script>
 		<link rel="stylesheet" href="jscripts/sceditor/themes/' . $mybb->settings['sceditor_theme'] . '.min.css?ver='.SCEDITOR_PLUGIN_VER.'" type="text/css" media="all" />
 		<script src="jscripts/sceditor/jquery.sceditor.min.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>
@@ -366,4 +380,54 @@ function sceditor_parse($message)
 	$message = preg_replace("/\[font=([a-z0-9 ,\-_]+)](.*?)\[\/font\]/si", '<span style="font-family: $1">$2</span>', $message);
 
 	return $message;
+}
+
+function sceditor_usercp_update($obj)
+{
+	global $mybb;
+
+	if (isset($mybb->input['showeditor']))
+	{
+		$obj->user_update_data['sceditor_enable']     = (int)$mybb->input['showeditor'] <  2 ? 1 : 0;
+		$obj->user_update_data['sceditor_sourcemode'] = (int)$mybb->input['showeditor'] == 1 ? 1 : 0;
+		$obj->user_update_data['showcodebuttons']     = (int)$mybb->input['showeditor'] == 2 ? 1 : 0;
+	}
+}
+
+function sceditor_usercp_options()
+{
+	global $templates, $mybb, $lang;
+
+	$lang->load("sceditor");
+
+	if($mybb->settings['sceditor_enable_user_choice'])
+	{
+		$sceditor_selected = $mybb->user['sceditor_enable'] && !$mybb->user['sceditor_sourcemode'];
+		$none_selected     = !$mybb->user['sceditor_enable'] && !$mybb->user['sceditor_sourcemode'] && !$mybb->user['showcodebuttons'];
+
+		$html = "	<td valign=\"top\" colspan=\"2\">
+					<span class=\"smalltext\">{$lang->showeditor}</span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan=\"2\">
+					<select name=\"showeditor\">
+						<option value=\"0\" " . ($sceditor_selected ? 'selected="selected"' : '') . ">
+							{$lang->showeditor_sceditor}
+						</option>
+						<option value=\"1\" " . ($mybb->user['sceditor_sourcemode'] ? 'selected="selected"' : '') . ">
+							{$lang->showeditor_sceditor_source}
+						</option>
+						<option value=\"2\" " . ($mybb->user['showcodebuttons'] ? 'selected="selected"' : '') . ">
+							{$lang->showeditor_mycode}
+						</option>
+						<option value=\"3\" " . ($none_selected ? 'selected="selected"' : '') . ">
+							{$lang->showeditor_none}
+						</option>
+					</select>";
+
+		$templates->cache['usercp_options'] = str_replace('{showeditorplaceholder}', $html, $templates->cache['usercp_options']);
+	}
+	else
+		$templates->cache['usercp_options'] = str_replace('{showeditorplaceholder}', '', $templates->cache['usercp_options']);
 }
