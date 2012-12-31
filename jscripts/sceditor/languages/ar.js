@@ -1,8 +1,10 @@
-// add locale:'ar', to your config options.
-
+/**
+ * @author Charaf Erraiss http://www.lafac.tk
+ * @license [MIT](http://www.opensource.org/licenses/mit-license.php)
+ */
 (function ($) {
-  'use strict';
-	
+	'use strict';
+
 	$.sceditor.locale["ar"] = {
 		"Bold": "سميك",
 		"Italic": "مائل",
@@ -35,7 +37,6 @@
 		"Insert a table": "إدراج جدول",
 		"Insert a horizontal rule": "إدراج مسطرة افقية",
 		"Code": "كود برمجي",
-		"Insert a Quote": "إدراج إقتباس",
 		"Width (optional):": "العرض (إختياري)",
 		"Height (optional):": "الإرتفاع (إختياري)",
 		"Insert an image": "إدراج صورة",
@@ -51,8 +52,18 @@
 		"Insert a YouTube video": "إدراج وصلة فيديو يوتيوب",
 		"Insert current date": "إدراج التاريخ الحالي",
 		"Insert current time": "إدراج الوقت الحالي",
-		"Print": "اطبع",
+		"Print": "طباعة",
 		"View source": "اظهر المصدر",
-		dateFormat: "day.month.year"
+		"Description (optional):": "الوصف (اختياري)",
+		"Enter the image URL:": "ضع وصلة الصورة",
+		"Enter the e-mail address:": "أدخل عنوان البريد الإلكتروني",
+		"Enter the displayed text:": "أدخل النص الذي سيتم اظهاره",
+		"Enter URL:": "أدخل وصلة موقع",
+		"Enter the YouTube video URL or ID:": "أدخل وصلة فيديو يوتيوب أو رقمه التعريفي",
+		"Insert a Quote": "إدراج إقتباس",
+		"Invalid YouTube video": "الفيديو غير صالح!",
+		"Right-to-Left": "الكتابة من اليمين",
+		"Left-to-Right": "الكتابة من اليسار",
+		dateFormat: "day-month-year"
 	}
 })(jQuery);
