@@ -370,7 +370,7 @@ function sceditor_load($page)
 				sceditor_rtl        = ' . ($lang->settings['rtl'] ? 'true' : 'false') . ';
 		</script>
 		<link rel="stylesheet" href="jscripts/sceditor/themes/' . $mybb->settings['sceditor_theme'] . '.min.css?ver='.SCEDITOR_PLUGIN_VER.'" type="text/css" media="all" />
-		<script src="jscripts/sceditor/jquery.sceditor.min.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>
+		<script src="jscripts/sceditor/jquery.sceditor.bbcode.min.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>
 		' . $sceditor_lang_url . '
 		<script src="jscripts/sceditor/jquery.sceditor.mybb.helper.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
 
