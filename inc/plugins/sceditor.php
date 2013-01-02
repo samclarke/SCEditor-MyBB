@@ -4,7 +4,7 @@
  *
  * @author Sam Clarke
  * @created 22/06/12
- * @version 1.4.0.2
+ * @version 1.4.0.3
  * @contact sam@sceditor.com
  * @license GPL
  */
@@ -12,7 +12,7 @@
 if(!defined("IN_MYBB"))
 	die("You cannot directly access this file.");
 
-define('SCEDITOR_PLUGIN_VER', '1.4.0.2');
+define('SCEDITOR_PLUGIN_VER', '1.4.0.3');
 
 
 $plugins->add_hook("pre_output_page",         "sceditor_load", 100);
@@ -160,15 +160,19 @@ function sceditor_install()
 					"default=Default\n" .
 					"en=English (GB)\n" .
 					"en-US=English (US)\n" .
-					"de=German\n" .
-					"fr=French\n" .
-					"pt-BR=Brazilian Portuguese\n" .
+
+					// English is the most common.
+					// The rest should be sorted alphabetically.
+					"ar=Arabic\n" .
 					"nl=Dutch\n" .
-					"ru=Russian\n" .
 					"et=Estonian\n" .
+					"fr=French\n" .
+					"de=German\n" .
 					"no=Norwegian\n" .
-					"sv=Swedish\n" .
+					"pt-BR=Brazilian Portuguese\n" .
+					"ru=Russian\n" .
 					"es=Spanish\n" .
+					"sv=Swedish\n" .
 					"vi=Vietnamese",
 		'value'		=> 'default',
 		'disporder'	=> '10',
@@ -330,34 +334,44 @@ function sceditor_load($page)
 
 
 	$jqueryNoConflict   = '';
-	$lang               = '';
+	$sceditor_lang_url  = '';
 	$jquery             = '';
 	$sceditor_lang      = ($mybb->settings['sceditor_lang'] === 'default' ? 'en' : $mybb->settings['sceditor_lang']);
 	$mybb_emoticons     = json_encode(array( 'dropdown' => $smilies ));
 	$sceditor_autofocus = (THIS_SCRIPT != "showthread.php" ? 'true' : 'false');
 
 
+	// Use users language if available
+	if(in_array($lang->settings['htmllang'], array('en', 'en-US', 'en-GB', 'ar', 'nl', 'et', 'fr', 'de', 'no', 'pt-BR', 'ru', 'es', 'sv', 'vi')))
+		$sceditor_lang = $lang->settings['htmllang'];
+
+	// en-GB is just called en by SCEditor
+	if($sceditor_lang === 'en-GB')
+		$sceditor_lang = 'en';
+
 	if($mybb->settings['sceditor_include_jquery'])
-		$jquery = '<script src="jscripts/sceditor/jquery-1.8.2.min.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
+		$jquery = '<script src="jscripts/sceditor/j
+	query-1.8.2.min.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
 
 	if($mybb->settings['sceditor_include_jquery'] && $mybb->settings['sceditor_enable_jquery_noconflict'])
 		$jqueryNoConflict = '$.noConflict();';
 
-	if($mybb->settings['sceditor_lang'] && $mybb->settings['sceditor_lang'] !== 'default')
-		$lang = '<script src="jscripts/sceditor/languages/' . $mybb->settings['sceditor_lang'] . '.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
+	if($sceditor_lang !== 'default')
+		$sceditor_lang_url = '<script src="jscripts/sceditor/languages/' . $sceditor_lang . '.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
 
 
 	$js = '	' . $jquery . '
 		<script>
 			' . $jqueryNoConflict  . '
-			var sceditor_lang       = "' . $sceditor_lang . '";
-			var mybb_emoticons      = ' . $mybb_emoticons . ';
-			var sceditor_autofocus  = ' . $sceditor_autofocus . ';
-			var sceditor_sourcemode = ' . $mybb->user['sceditor_sourcemode'] . ';
+			var	sceditor_lang       = "' . $sceditor_lang . '",
+				mybb_emoticons      = ' . $mybb_emoticons . ',
+				sceditor_autofocus  = ' . $sceditor_autofocus . '
+				sceditor_sourcemode = ' . $mybb->user['sceditor_sourcemode'] . ',
+				sceditor_rtl        = ' . ($lang->settings['rtl'] ? 'true' : 'false') . ';
 		</script>
 		<link rel="stylesheet" href="jscripts/sceditor/themes/' . $mybb->settings['sceditor_theme'] . '.min.css?ver='.SCEDITOR_PLUGIN_VER.'" type="text/css" media="all" />
 		<script src="jscripts/sceditor/jquery.sceditor.min.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>
-		' . $lang . '
+		' . $sceditor_lang_url . '
 		<script src="jscripts/sceditor/jquery.sceditor.mybb.helper.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
 
 

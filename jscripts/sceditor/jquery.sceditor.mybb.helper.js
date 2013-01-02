@@ -117,6 +117,7 @@ jQuery(document).ready(function($) {
 		plugins:		'bbcode',
 		autofocus:		sceditor_autofocus,
 		locale:			sceditor_lang,
+		rtl:			sceditor_rtl,
 		emoticons:		mybb_emoticons
 	});
 
