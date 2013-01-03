@@ -358,6 +358,8 @@ function sceditor_load($page)
 	if($sceditor_lang !== 'default')
 		$sceditor_lang_url = '<script src="jscripts/sceditor/languages/' . $sceditor_lang . '.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
 
+	if ($lang->settings['rtl'])
+		$sceditor_rtl_css = '<style type="text/css">.sceditor-button {float: right;}</style>';
 
 	$js = '	' . $jquery . '
 		<script>
@@ -369,6 +371,7 @@ function sceditor_load($page)
 				sceditor_rtl        = ' . ($lang->settings['rtl'] ? 'true' : 'false') . ';
 		</script>
 		<link rel="stylesheet" href="jscripts/sceditor/themes/' . $mybb->settings['sceditor_theme'] . '.min.css?ver='.SCEDITOR_PLUGIN_VER.'" type="text/css" media="all" />
+		' . $sceditor_rtl_css . '
 		<script src="jscripts/sceditor/jquery.sceditor.bbcode.min.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>
 		' . $sceditor_lang_url . '
 		<script src="jscripts/sceditor/jquery.sceditor.mybb.helper.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
