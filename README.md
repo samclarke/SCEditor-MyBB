@@ -2,7 +2,9 @@
 
 ## Download
 
-Releases will be added to the [downloads page](https://github.com/samclarke/SCEditor-MyBB/downloads).
+~~Releases will be added to the [downloads page](https://github.com/samclarke/SCEditor-MyBB/downloads).~~ GitHub has deprecated downloads.
+
+Instead use the button labeled [ZIP](https://github.com/samclarke/SCEditor-MyBB/archive/master.zip).
 
 
 ## License
