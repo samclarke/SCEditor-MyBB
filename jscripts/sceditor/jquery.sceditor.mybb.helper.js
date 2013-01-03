@@ -78,7 +78,7 @@ jQuery(document).ready(function($) {
 						size = 7;
 				}
 				else
-					size = fontSize;
+					size = (~~fontSize) + 1;
 
 				if(size > 7)
 					size = 7;
