@@ -125,6 +125,7 @@ function sceditor_install()
 		'optionscode'	=> "select\n" .
 					"default=Default\n" .
 					"modern=Modern\n" .
+					"square=Square\n" .
 					"office-toolbar=Office Toolbar\n" .
 					"office=Office",
 		'value'		=> 'default',
