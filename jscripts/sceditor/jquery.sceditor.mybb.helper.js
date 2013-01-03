@@ -108,8 +108,23 @@ jQuery(document).ready(function($) {
 				content.append($('<a class="sceditor-fontsize-option" data-size="' + i + '" href="#"><font size="' + i + '">' + i + '</font></a>').click(clickFunc));
 
 			editor.createDropDown(caller, "fontsize-picker", content);
+		},
+		txtExec: function(caller) {
+			var	editor = this,
+				sizes = ['xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'];
+
+			$.sceditor.command.get('size')._dropDown(
+				editor,
+				caller,
+				function(size) {
+					size = (~~size);
+					size = (size > 7) ? 7 : ( (size < 1) ? 1 : size );
+
+					editor.insertText("[size=" + sizes[size] + "]", "[/size]");
+				}
+			);
 		}
-	})
+	});
 
 
 	/********************************************
