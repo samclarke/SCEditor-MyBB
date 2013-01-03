@@ -350,8 +350,7 @@ function sceditor_load($page)
 		$sceditor_lang = 'en';
 
 	if($mybb->settings['sceditor_include_jquery'])
-		$jquery = '<script src="jscripts/sceditor/j
-	query-1.8.2.min.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
+		$jquery = '<script src="jscripts/sceditor/jquery-1.8.2.min.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
 
 	if($mybb->settings['sceditor_include_jquery'] && $mybb->settings['sceditor_enable_jquery_noconflict'])
 		$jqueryNoConflict = '$.noConflict();';
