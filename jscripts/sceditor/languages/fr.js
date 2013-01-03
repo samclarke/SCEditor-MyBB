@@ -3,7 +3,7 @@
 
 (function ($) {
 	'use strict';
-	
+
 	$.sceditor.locale["fr"] = {
 		"Bold": "Gras",
 		"Italic": "Italique",
@@ -60,7 +60,6 @@
 		"Enter the displayed text:": "Entrez le texte affiché:",
 		"Enter URL:": "Entrer une URL:",
 		"Enter the YouTube video URL or ID:": "Entrez l'URL vidéo YouTube ou ID:",
-		"Insert a Quote": "Insérer une citation",
 		"Invalid YouTube video": "Invalid vidéo YouTube",
 		"Right-to-Left": "De droite à gauche",
 		"Left-to-Right": "De gauche à droite",
