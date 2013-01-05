@@ -265,15 +265,6 @@ function sceditor_deactivate()
 		'<td valign="top" width="1"><input type="checkbox" class="checkbox" name="showcodebuttons" id="showcodebuttons" value="1" {$showcodebuttonscheck} /></td>
 <td><span class="smalltext"><label for="showcodebuttons">{$lang->show_codebuttons}</label></span>'
 	);
-
-	// left to remove old versions, not needed anymore
-	find_replace_templatesets(
-		"misc_smilies_popup_smilie",
-		"#".preg_quote('onclick="insertSmilie(\'{$smilie[\'insert\']}\', \'{$smilie[\'image\']}\');"')."#i",
-		'onclick="insertSmilie(\'{$smilie[\'insert\']}\');"',
-		0
-	);
-
 }
 
 function sceditor_load($page)
