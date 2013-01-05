@@ -16,6 +16,7 @@ define('SCEDITOR_PLUGIN_VER', '1.4.0.4');
 
 
 $plugins->add_hook("pre_output_page",         "sceditor_load", 100);
+$plugins->add_hook("global_start",            "sceditor_sidebar_emoticons");
 $plugins->add_hook("parse_message",           "sceditor_parse");
 $plugins->add_hook("datahandler_user_update", "sceditor_usercp_update");
 $plugins->add_hook("usercp_options_end",      "sceditor_usercp_options");
@@ -197,6 +198,16 @@ function sceditor_install()
 		'optionscode'	=> 'yesno',
 		'value'		=> '1',
 		'disporder'	=> '12',
+		'gid'		=> $groupid
+	));
+
+	$db->insert_query("settings", array(
+		'name'		=> 'sceditor_enable_sidebar_emoticons',
+		'title'		=> $lang->sceditor_enable_sidebar_emoticons_title,
+		'description'	=> $lang->sceditor_enable_sidebar_emoticons_desc,
+		'optionscode'	=> 'yesno',
+		'value'		=> '1',
+		'disporder'	=> '13',
 		'gid'		=> $groupid
 	));
 
@@ -383,6 +394,13 @@ function sceditor_load($page)
 
 	// add the editors JS
 	return str_replace('</head>', $js . '</head>', $page);
+}
+
+function sceditor_sidebar_emoticons()
+{
+	global $mybb;
+
+	$mybb->user['showcodebuttons'] = $mybb->settings['sceditor_enable_sidebar_emoticons'];
 }
 
 function sceditor_parse($message)
