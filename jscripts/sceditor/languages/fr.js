@@ -64,5 +64,5 @@
 		"Right-to-Left": "De droite à gauche",
 		"Left-to-Right": "De gauche à droite",
 		dateFormat: "day.month.year"
-	}
+	};
 })(jQuery);

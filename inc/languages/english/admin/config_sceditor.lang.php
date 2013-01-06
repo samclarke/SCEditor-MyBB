@@ -39,3 +39,6 @@ $l['sceditor_enable_user_choice_desc']        = "If to allow users to choose if 
 
 $l['sceditor_excluded_themes_title']          = "Exclude themes";
 $l['sceditor_excluded_themes_desc']           = "A comma seperated list of theme names to exclude the editor from. <strong>There should not be any spaces arround the themes name.</strong>";
+
+$l['sceditor_enable_sidebar_emoticons_title'] = "Show sidebar emoticons";
+$l['sceditor_enable_sidebar_emoticons_desc']  = "If to show the emoticons on the side of the post page.";
