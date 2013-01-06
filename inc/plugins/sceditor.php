@@ -391,7 +391,8 @@ function sceditor_sidebar_emoticons()
 {
 	global $mybb;
 
-	$mybb->user['showcodebuttons'] = $mybb->settings['sceditor_enable_sidebar_emoticons'];
+	if($mybb->settings['enablesceditor'] && $mybb->user['sceditor_enable'])
+		$mybb->user['showcodebuttons'] = $mybb->settings['sceditor_enable_sidebar_emoticons'];
 }
 
 function sceditor_parse($message)
