@@ -171,7 +171,9 @@ jQuery(document).ready(function($) {
 				content = '<cite>' + attrs.defaultattr + '</cite>' + content;
 
 			return '<blockquote' + data + '>' + content + '</blockquote>';
-		}
+		},
+		breakStart: true,
+		breakEnd: true
 	});
 
 
