@@ -361,9 +361,6 @@ function sceditor_load($page)
 	if($sceditor_lang !== 'default')
 		$sceditor_lang_url = '<script src="jscripts/sceditor/languages/' . $sceditor_lang . '.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
 
-	if ($lang->settings['rtl'])
-		$sceditor_rtl_css = '<style type="text/css">.sceditor-button {float: right;}</style>';
-
 	$js = '	' . $jquery . '
 		<script>
 			' . $jqueryNoConflict  . '
