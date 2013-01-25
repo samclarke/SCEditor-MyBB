@@ -367,11 +367,9 @@ function sceditor_load($page)
 			var	sceditor_lang       = "' . $sceditor_lang . '",
 				mybb_emoticons      = ' . $mybb_emoticons . ',
 				sceditor_autofocus  = ' . $sceditor_autofocus . '
-				sceditor_sourcemode = ' . $mybb->user['sceditor_sourcemode'] . ',
-				sceditor_rtl        = ' . ($lang->settings['rtl'] ? 'true' : 'false') . ';
+				sceditor_sourcemode = ' . $mybb->user['sceditor_sourcemode'] . ';
 		</script>
 		<link rel="stylesheet" href="jscripts/sceditor/themes/' . $mybb->settings['sceditor_theme'] . '.min.css?ver='.SCEDITOR_PLUGIN_VER.'" type="text/css" media="all" />
-		' . $sceditor_rtl_css . '
 		<script src="jscripts/sceditor/jquery.sceditor.bbcode.min.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>
 		' . $sceditor_lang_url . '
 		<script src="jscripts/sceditor/jquery.sceditor.mybb.helper.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
