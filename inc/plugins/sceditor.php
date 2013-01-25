@@ -374,9 +374,8 @@ function sceditor_load($page)
 		' . $sceditor_lang_url . '
 		<script src="jscripts/sceditor/jquery.sceditor.mybb.helper.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
 
-
 	// strip the default editor
-	$page = preg_replace('/<!-- start: codebuttons -->.*?<!-- end: codebuttons -->/ism', "", $page);
+	$page = str_replace(build_mycode_inserter(THIS_SCRIPT === 'usercp.php' ? 'signature' : null), "", $page);
 
 	// add the editors JS
 	return str_replace('</head>', $js . '</head>', $page);
