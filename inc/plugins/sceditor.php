@@ -375,7 +375,7 @@ function sceditor_load($page)
 		<script src="jscripts/sceditor/jquery.sceditor.mybb.helper.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
 
 	// strip the default editor
-	$page = str_replace(build_mycode_inserter(THIS_SCRIPT === 'usercp.php' ? 'signature' : null), "", $page);
+	$page = str_replace(build_mycode_inserter(THIS_SCRIPT === 'usercp.php' ? 'signature' : 'message'), "", $page);
 
 	// add the editors JS
 	return str_replace('</head>', $js . '</head>', $page);
@@ -384,6 +384,10 @@ function sceditor_load($page)
 function sceditor_sidebar_emoticons()
 {
 	global $mybb;
+
+	if(THIS_SCRIPT === "usercp.php")
+		if($mybb->input['action'] != "editsig" || !$mybb->settings['enablesceditor_signature'])
+			return false;
 
 	if($mybb->settings['enablesceditor'] && $mybb->user['sceditor_enable'])
 		$mybb->user['showcodebuttons'] = $mybb->settings['sceditor_enable_sidebar_emoticons'];
