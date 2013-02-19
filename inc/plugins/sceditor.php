@@ -275,7 +275,7 @@ function sceditor_load($page)
 		return false;
 
 	// check if editor should be enabled on this theme
-	if(strrpos("," . $mybb->settings['sceditor_excluded_themes'] . ",", "," . strtolower($theme['name']) . ",") !== false)
+	if(strrpos("," . strtolower($mybb->settings['sceditor_excluded_themes']) . ",", "," . strtolower($theme['name']) . ",") !== false)
 		return false;
 
 	if(THIS_SCRIPT == "misc.php" && $mybb->input['action'] == "smilies")
