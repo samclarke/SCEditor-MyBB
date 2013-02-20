@@ -235,6 +235,18 @@ jQuery(document).ready(function($) {
 	});
 
 
+	/****************************
+	 * Emoticon disable support *
+	 ****************************/
+	var $checkbox = $("input[name=postoptions\\[disablesmilies\\]]");
+
+	$checkbox.change(function() {
+		$("#message, #signature").sceditor("instance").emoticons(!this.checked);
+	});
+
+	if($checkbox.length)
+		$("#message, #signature").sceditor("instance").emoticons(!$checkbox[0].checked);
+
 
 	/************************************
 	 * clickableEditor compat functions *
@@ -261,10 +273,11 @@ jQuery(document).ready(function($) {
 	if(textarea)
 	{
 		$(textarea.form).bind("reset", function() {
-			$("#message, #signature").data("sceditor").val("");
+			$("#message, #signature").data("sceditor").val("").emoticons(true);
 		});
 	}
 });
+
 
 /**********************************
  * Thread compatibility functions *
