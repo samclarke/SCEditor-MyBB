@@ -187,6 +187,12 @@ jQuery(document).ready(function($) {
 					.remove('th')
 					.remove('td');
 
+	/********************************************
+	 * Remove code and quote if in partial mode *
+	 ********************************************/
+//	if(sceditor_partial_mode)
+//		$.sceditorBBCodePlugin.bbcode.remove('code').remove('quote');
+
 
 	/*******************
 	 * Init the editor *
@@ -202,7 +208,8 @@ jQuery(document).ready(function($) {
 		autofocus:		sceditor_autofocus,
 		locale:			sceditor_lang,
 		rtl:			null,
-		emoticons:		mybb_emoticons
+		emoticons:		mybb_emoticons,
+		autofocusEnd:           true
 	});
 
 
