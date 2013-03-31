@@ -208,8 +208,8 @@ jQuery(document).ready(function($) {
 	/********************************************
 	 * Remove code and quote if in partial mode *
 	 ********************************************/
-	if(sceditor_opts.partialmode)
-		$.sceditor.plugins.bbcode.bbcode.remove('code').remove('quote');
+	//if(sceditor_opts.partialmode)
+	//	$.sceditor.plugins.bbcode.bbcode.remove('code').remove('quote');
 
 
 
@@ -228,6 +228,7 @@ jQuery(document).ready(function($) {
 		locale:			sceditor_opts.lang,
 		rtl:			null,
 		emoticons:		sceditor_opts.emoticons,
+		enablePasteFiltering:   true,
 		autofocusEnd:           true
 	});
 

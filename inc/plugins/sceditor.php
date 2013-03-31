@@ -361,17 +361,15 @@ function sceditor_load($page)
 	if($sceditor_lang !== 'default')
 		$sceditor_lang_url = '<script src="jscripts/sceditor/languages/' . $sceditor_lang . '.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
 
-
 	$js = '	' . $jquery . '
 		<script>
 			' . $jqueryNoConflict  . '
 			var sceditor_opts = {
 				lang:        "' . $sceditor_lang . '",
-				emoticons:   ' . $mybb_emoticons . ',
-				autofocus:   ' . $sceditor_autofocus . ',
+				emoticons:   '  . $mybb_emoticons . ',
+				autofocus:   '  . $sceditor_autofocus . ',
 				lang:        "' . $sceditor_lang . '",
-				partialmode: false,
-				sourcemode:  ' . $mybb->user['sceditor_sourcemode'] . '
+				sourcemode:  '  . $mybb->user['sceditor_sourcemode'] . '
 			};
 		</script>
 		<link rel="stylesheet" href="jscripts/sceditor/themes/' . $mybb->settings['sceditor_theme'] . '.min.css?ver='.SCEDITOR_PLUGIN_VER.'" type="text/css" media="all" />
