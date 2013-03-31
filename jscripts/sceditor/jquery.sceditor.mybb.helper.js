@@ -32,12 +32,22 @@ jQuery(document).ready(function($) {
 			html: function(element, attrs, content) {
 				var type = (attrs.defaultattr === '1' ? 'ol' : 'ul');
 
+				if(attrs.defaultattr === 'a')
+					type = 'ol type="a"';
+
 				return '<' + type + '>' + content + '</' + type + '>';
 			},
+
 			breakAfter: false
 		})
 		.set("ul", { format: "[list]{0}[/list]" })
-		.set("ol", { format: "[list=1]{0}[/list]" })
+		.set("ol", {
+			format: function($elm, content) {
+				var type = ($elm.attr('type') === 'a' ? 'a' : '1');
+
+				return '[list=' + type + ']' + content + '[/list]';
+			}
+		})
 		.set("li", { format: "[*]{0}", excludeClosing: true })
 		.set("*", { excludeClosing: true, isInline: false });
 
