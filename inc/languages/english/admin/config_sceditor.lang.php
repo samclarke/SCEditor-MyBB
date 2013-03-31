@@ -30,7 +30,6 @@ $l['sceditor_include_jquery_desc']            = "If this plugin should include j
 $l['sceditor_enable_jquery_noconflict_title'] = "Enable jQuery no conflict mode";
 $l['sceditor_enable_jquery_noconflict_desc']  = "If this plugin should enable jQuerys no conflict mode. Set to no if you, or another plugin already use jQuery in normal mode.";
 
-// Backslash in SCEditor\'s is required so it can be inserted into the DB
 $l['sceditor_lang_title']                     = "Default SCEditor language";
 $l['sceditor_lang_desc']                      = "The language to use if a translation in the users language is not available.";
 

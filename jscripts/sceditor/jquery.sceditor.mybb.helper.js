@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
 	/********************************************
 	 * Update editor to use align= as alignment *
 	 ********************************************/
-	$.sceditorBBCodePlugin.bbcode
+	$.sceditor.plugins.bbcode.bbcode
 		.set("align", {
 			html: function(element, attrs, content) {
 				return '<div align="' + (attrs.defaultattr || 'left') + '">' + content + '</div>';
@@ -23,10 +23,11 @@ jQuery(document).ready(function($) {
 		.set("justify", { txtExec: ["[align=justify]", "[/align]"] });
 
 
+
 	/************************************************
 	 * Update font to support MyBB's BBCode dialect *
 	 ************************************************/
-	$.sceditorBBCodePlugin.bbcode
+	$.sceditor.plugins.bbcode.bbcode
 		.set("list", {
 			html: function(element, attrs, content) {
 				var type = (attrs.defaultattr === '1' ? 'ol' : 'ul');
@@ -45,10 +46,11 @@ jQuery(document).ready(function($) {
 		.set("orderedlist", { txtExec: ["[list=1]\n[*]", "\n[/list]"] });
 
 
+
 	/***********************************************************
 	 * Update size tag to use xx-small-xx-large instead of 1-7 *
 	 ***********************************************************/
-	$.sceditorBBCodePlugin.bbcode.set('size', {
+	$.sceditor.plugins.bbcode.bbcode.set('size', {
 		format: function($elm, content) {
 			var	fontSize,
 				sizes = ['xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
@@ -127,10 +129,11 @@ jQuery(document).ready(function($) {
 	});
 
 
+
 	/********************************************
 	 * Update quote to support pid and dateline *
 	 ********************************************/
-	$.sceditorBBCodePlugin.bbcode.set("quote", {
+	$.sceditor.plugins.bbcode.bbcode.set("quote", {
 		format: function(element, content) {
 			var	author = '',
 				$elm  = $(element),
@@ -172,6 +175,7 @@ jQuery(document).ready(function($) {
 
 			return '<blockquote' + data + '>' + content + '</blockquote>';
 		},
+		quoteType: $.sceditor.BBCodeParser.QuoteType.always,
 		breakStart: true,
 		breakEnd: true
 	});
@@ -182,16 +186,19 @@ jQuery(document).ready(function($) {
 	 * Remove last bits of table support *
 	 *************************************/
 	$.sceditor.command.remove('table');
-	$.sceditorBBCodePlugin.bbcode.remove('table')
+	$.sceditor.plugins.bbcode.bbcode.remove('table')
 					.remove('tr')
 					.remove('th')
 					.remove('td');
 
+
+
 	/********************************************
 	 * Remove code and quote if in partial mode *
 	 ********************************************/
-//	if(sceditor_partial_mode)
-//		$.sceditorBBCodePlugin.bbcode.remove('code').remove('quote');
+	if(sceditor_opts.partialmode)
+		$.sceditor.plugins.bbcode.bbcode.remove('code').remove('quote');
+
 
 
 	/*******************
@@ -205,10 +212,10 @@ jQuery(document).ready(function($) {
 					"print,source",
 		resizeMaxHeight:	800,
 		plugins:		'bbcode',
-		autofocus:		sceditor_autofocus,
-		locale:			sceditor_lang,
+		autofocus:		sceditor_opts.autofocus,
+		locale:			sceditor_opts.lang,
 		rtl:			null,
-		emoticons:		mybb_emoticons,
+		emoticons:		sceditor_opts.emoticons,
 		autofocusEnd:           true
 	});
 
@@ -217,7 +224,7 @@ jQuery(document).ready(function($) {
 	/******************************
 	 * Source mode option support *
 	 ******************************/
-	if(sceditor_sourcemode)
+	if(sceditor_opts.sourcemode)
 		$("#message, #signature").sceditor("instance").sourceMode(true);
 
 
@@ -235,10 +242,11 @@ jQuery(document).ready(function($) {
 	});
 
 
+
 	/****************************
 	 * Emoticon disable support *
 	 ****************************/
-	var $checkbox = $("input[name=postoptions\\[disablesmilies\\]]");
+	var $checkbox = $("input[name=postoptions\\[disablesmilies\\]], input[name=options\\[disablesmilies\\]]");
 
 	$checkbox.change(function() {
 		$("#message, #signature").sceditor("instance").emoticons(!this.checked);
@@ -246,6 +254,7 @@ jQuery(document).ready(function($) {
 
 	if($checkbox.length)
 		$("#message, #signature").sceditor("instance").emoticons(!$checkbox[0].checked);
+
 
 
 	/************************************
@@ -277,6 +286,7 @@ jQuery(document).ready(function($) {
 		});
 	}
 });
+
 
 
 /**********************************

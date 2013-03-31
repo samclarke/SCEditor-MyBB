@@ -4,7 +4,7 @@
  *
  * @author Sam Clarke
  * @created 22/06/12
- * @version 1.4.1
+ * @version 1.4.2
  * @contact sam@sceditor.com
  * @license GPL
  */
@@ -12,7 +12,7 @@
 if(!defined("IN_MYBB"))
 	die("You cannot directly access this file.");
 
-define('SCEDITOR_PLUGIN_VER', '1.4.1');
+define('SCEDITOR_PLUGIN_VER', '1.4.2');
 
 
 $plugins->add_hook("pre_output_page",         "sceditor_load", 100);
@@ -353,7 +353,7 @@ function sceditor_load($page)
 		$sceditor_lang = 'en';
 
 	if($mybb->settings['sceditor_include_jquery'])
-		$jquery = '<script src="jscripts/sceditor/jquery-1.8.2.min.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
+		$jquery = '<script src="jscripts/sceditor/jquery-1.8.2.min.js"></script>';
 
 	if($mybb->settings['sceditor_include_jquery'] && $mybb->settings['sceditor_enable_jquery_noconflict'])
 		$jqueryNoConflict = '$.noConflict();';
@@ -361,13 +361,18 @@ function sceditor_load($page)
 	if($sceditor_lang !== 'default')
 		$sceditor_lang_url = '<script src="jscripts/sceditor/languages/' . $sceditor_lang . '.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
 
+
 	$js = '	' . $jquery . '
 		<script>
 			' . $jqueryNoConflict  . '
-			var	sceditor_lang       = "' . $sceditor_lang . '",
-				mybb_emoticons      = ' . $mybb_emoticons . ',
-				sceditor_autofocus  = ' . $sceditor_autofocus . '
-				sceditor_sourcemode = ' . $mybb->user['sceditor_sourcemode'] . ';
+			var sceditor_opts = {
+				lang:        "' . $sceditor_lang . '",
+				emoticons:   ' . $mybb_emoticons . ',
+				autofocus:   ' . $sceditor_autofocus . ',
+				lang:        "' . $sceditor_lang . '",
+				partialmode: false,
+				sourcemode:  ' . $mybb->user['sceditor_sourcemode'] . '
+			};
 		</script>
 		<link rel="stylesheet" href="jscripts/sceditor/themes/' . $mybb->settings['sceditor_theme'] . '.min.css?ver='.SCEDITOR_PLUGIN_VER.'" type="text/css" media="all" />
 		<script src="jscripts/sceditor/jquery.sceditor.bbcode.min.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>
