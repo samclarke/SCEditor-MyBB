@@ -175,7 +175,9 @@ jQuery(document).ready(function($) {
 
 			return '<blockquote' + data + '>' + content + '</blockquote>';
 		},
-		quoteType: $.sceditor.BBCodeParser.QuoteType.always,
+		quoteType: function(val, name) {
+			return "'" + val.replace("'", "\\'") + "'";
+		},
 		breakStart: true,
 		breakEnd: true
 	});
