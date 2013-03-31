@@ -41,3 +41,6 @@ $l['sceditor_excluded_themes_desc']           = "A comma seperated list of theme
 
 $l['sceditor_enable_sidebar_emoticons_title'] = "Show sidebar emoticons";
 $l['sceditor_enable_sidebar_emoticons_desc']  = "If to show the emoticons on the side of the post page.";
+
+$l['sceditor_limit_font_title']               = "Limit [font]";
+$l['sceditor_limit_font_desc']                = "If to only keep the first copied font in a font stack.";

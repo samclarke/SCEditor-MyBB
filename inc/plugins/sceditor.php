@@ -211,6 +211,16 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
+	$db->insert_query("settings", array(
+		'name'		=> 'sceditor_limit_font',
+		'title'		=> $lang->sceditor_limit_font_title,
+		'description'	=> $lang->sceditor_limit_font_desc,
+		'optionscode'	=> 'yesno',
+		'value'		=> '0',
+		'disporder'	=> '14',
+		'gid'		=> $groupid
+	));
+
 	rebuild_settings();
 }
 
@@ -342,6 +352,7 @@ function sceditor_load($page)
 	$sceditor_lang      = ($mybb->settings['sceditor_lang'] === 'default' ? 'en' : $mybb->settings['sceditor_lang']);
 	$mybb_emoticons     = json_encode(array( 'dropdown' => $smilies ));
 	$sceditor_autofocus = (THIS_SCRIPT != "showthread.php" ? 'true' : 'false');
+	$limit_font_tag     = $mybb->settings['sceditor_limit_font'] ? 'true' : 'false';
 
 
 	// Use users language if available
@@ -369,6 +380,7 @@ function sceditor_load($page)
 				emoticons:   '  . $mybb_emoticons . ',
 				autofocus:   '  . $sceditor_autofocus . ',
 				lang:        "' . $sceditor_lang . '",
+				limitfont:   '  . $limit_font_tag . ',
 				sourcemode:  '  . $mybb->user['sceditor_sourcemode'] . '
 			};
 		</script>
@@ -389,7 +401,7 @@ function sceditor_sidebar_emoticons()
 	global $mybb;
 
 	if(THIS_SCRIPT === "usercp.php")
-		if($mybb->input['action'] != "editsig" || !$mybb->settings['enablesceditor_signature'])
+		if($myb->input['action'] != "editsig" || !$mybb->settings['enablesceditor_signature'])
 			return false;
 
 	if($mybb->settings['enablesceditor'] && $mybb->user['sceditor_enable'])

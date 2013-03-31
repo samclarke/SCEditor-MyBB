@@ -194,6 +194,25 @@ jQuery(document).ready(function($) {
 
 
 
+	/************************************************************
+	 * Update font tag to allow limiting to only first in stack *
+	 ************************************************************/
+	$.sceditor.plugins.bbcode.bbcode.set("font", {
+		format: function(element, content) {
+			var font;
+
+			if(element[0].nodeName.toLowerCase() !== "font" || !(font = element.attr('face')))
+				font = element.css('font-family');
+
+			if(sceditor_opts.limitfont)
+				font = font.split(',')[0];
+
+			return '[font=' + this.stripQuotes(font) + ']' + content + '[/font]';
+		}
+	});
+
+
+
 	/*************************************
 	 * Remove last bits of table support *
 	 *************************************/
