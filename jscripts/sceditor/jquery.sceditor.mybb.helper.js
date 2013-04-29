@@ -250,6 +250,29 @@ jQuery(document).ready(function($) {
 		enablePasteFiltering:   true,
 		autofocusEnd:           true
 	});
+	
+	
+	/**************************************************
+	 * Init the editor for xmlhttp calls (Quick Edit) *
+	 **************************************************/
+	$(document).on("focus", ".inlineeditor", function () {
+		$(this).sceditor({
+			style:			"jscripts/sceditor/jquery.sceditor.mybb.css",
+			toolbar:		"bold,italic,underline,strike,subscript,superscript|left,center,right,justify|" +
+					"font,size,color,removeformat|bulletlist,orderedlist|" +
+					"code,quote|horizontalrule,image,email,link,unlink|emoticon,youtube,date,time|" +
+					"print,source",
+			resizeMaxHeight:	800,
+			resizeWidth:	false,
+			plugins:		'bbcode',
+			autofocus:		sceditor_opts.autofocus,
+			locale:			sceditor_opts.lang,
+			rtl:			null,
+			emoticons:		sceditor_opts.emoticons,
+			enablePasteFiltering:   true,
+			autofocusEnd:           true
+		});
+	});
 
 
 
@@ -336,6 +359,18 @@ if(typeof Thread !== "undefined")
 			editor.updateOriginal();
 
 		return quickReplyFunc.call(Thread, e);
+	};
+	
+	var quickEditSaveFunc = Thread.quickEditSave;
+	// update the textarea before sending it to xmlhttp.php
+	// used for quickedit
+	Thread.quickEditSave = function(pid) {
+		var editor = jQuery("#quickedit_"+pid).data("sceditor");
+
+		if(editor)
+			editor.updateOriginal();
+
+		return quickEditSaveFunc.call(Thread, pid);
 	};
 
 	Thread.multiQuotedLoaded = function(request)
