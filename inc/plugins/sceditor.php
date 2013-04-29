@@ -328,8 +328,14 @@ function sceditor_load($page)
 	// sort and output emoticons
 	$smilie_cache = $cache->read("smilies");
 	$smilies = array();
-	foreach($smilie_cache as $smilie)
-		$smilies[$smilie['find']] = $smilie['image'];
+	$hiddensmilies = array();
+	foreach($smilie_cache as $smilie) {
+		if($smilie['showclickable']) {
+			$smilies[$smilie['find']] = $smilie['image'];
+		} else {
+			$hiddensmilies[$smilie['find']] = $smilie['image'];
+		}
+	}
 
 	function smilie_len_cmp($a, $b)
 	{
@@ -343,6 +349,7 @@ function sceditor_load($page)
 	}
 
 	uksort($smilies, "smilie_len_cmp");
+	uksort($hiddensmilies, "smilie_len_cmp");
 
 
 
@@ -350,7 +357,7 @@ function sceditor_load($page)
 	$sceditor_lang_url  = '';
 	$jquery             = '';
 	$sceditor_lang      = ($mybb->settings['sceditor_lang'] === 'default' ? 'en' : $mybb->settings['sceditor_lang']);
-	$mybb_emoticons     = json_encode(array( 'dropdown' => $smilies ));
+	$mybb_emoticons     = json_encode(array( 'dropdown' => $smilies, 'hidden' => $hiddensmilies ));
 	$sceditor_autofocus = (THIS_SCRIPT != "showthread.php" ? 'true' : 'false');
 	$limit_font_tag     = $mybb->settings['sceditor_limit_font'] ? 'true' : 'false';
 
