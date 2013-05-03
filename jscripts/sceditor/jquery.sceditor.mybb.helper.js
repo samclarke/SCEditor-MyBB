@@ -255,15 +255,14 @@ jQuery(document).ready(function($) {
 	/**************************************************
 	 * Init the editor for xmlhttp calls (Quick Edit) *
 	 **************************************************/
-	$(document).on("focus", ".inlineeditor", function () {
+	$(document).on("focus", 'textarea[id*="quickedit_"]', function () {
 		$(this).sceditor({
 			style:			"jscripts/sceditor/jquery.sceditor.mybb.css",
 			toolbar:		"bold,italic,underline,strike,subscript,superscript|left,center,right,justify|" +
-					"font,size,color,removeformat|bulletlist,orderedlist|" +
-					"code,quote|horizontalrule,image,email,link,unlink|emoticon,youtube,date,time|" +
-					"print,source",
+						"font,size,color,removeformat|bulletlist,orderedlist|" +
+						"code,quote|horizontalrule,image,email,link,unlink|emoticon,youtube,date,time|" +
+						"print,source",
 			resizeMaxHeight:	800,
-			resizeWidth:	false,
 			plugins:		'bbcode',
 			autofocus:		sceditor_opts.autofocus,
 			locale:			sceditor_opts.lang,
@@ -279,8 +278,12 @@ jQuery(document).ready(function($) {
 	/******************************
 	 * Source mode option support *
 	 ******************************/
-	if(sceditor_opts.sourcemode)
+	if(sceditor_opts.sourcemode) {
 		$("#message, #signature").sceditor("instance").sourceMode(true);
+		$(document).on("focus", 'textarea[id*="quickedit_"]', function() {
+			$(this).sceditor("instance").sourceMode(true);
+		});
+	}
 
 
 
@@ -360,6 +363,46 @@ if(typeof Thread !== "undefined")
 
 		return quickReplyFunc.call(Thread, e);
 	};
+	
+	// scrollTo fix
+	Thread.quickEditLoaded = function(request, pid)
+	{
+		if(request.responseText.match(/<error>(.*)<\/error>/))
+		{
+			message = request.responseText.match(/<error>(.*)<\/error>/);
+			if(!message[1])
+			{
+				message[1] = "An unknown error occurred.";
+			}
+			if(this.spinner)
+			{
+				this.spinner.destroy();
+				this.spinner = '';
+			}
+			alert('There was an error performing the update.\n\n'+message[1]);
+			Thread.qeCache[pid] = "";
+		}
+		else if(request.responseText)
+		{
+			$("pid_"+pid).innerHTML = request.responseText;
+			element = jQuery("#quickedit_"+pid);
+			// get the textarea offset before it gets hidden by the editor
+			offset = element.offset().top-100;
+			// automatically trigger the editor by focusing the textarea
+			element.focus();
+			
+			// elegantly scroll to the editor
+			jQuery("html, body").animate({
+				scrollTop: offset
+			}, 700);
+		}
+		if(this.spinner)
+		{
+			this.spinner.destroy();
+			this.spinner = '';
+		}
+	};
+	
 	
 	var quickEditSaveFunc = Thread.quickEditSave;
 	// update the textarea before sending it to xmlhttp.php
