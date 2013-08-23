@@ -1,26 +1,30 @@
 window.clickableEditor = {};
 
 jQuery(document).ready(function($) {
+	'use strict';
+
+	var $document = $(document);
+
 	/********************************************
 	 * Update editor to use align= as alignment *
 	 ********************************************/
 	$.sceditor.plugins.bbcode.bbcode
-		.set("align", {
+		.set('align', {
 			html: function(element, attrs, content) {
 				return '<div align="' + (attrs.defaultattr || 'left') + '">' + content + '</div>';
 			},
 			isInline: false
 		})
-		.set("center", { format: "[align=center]{0}[/align]" })
-		.set("left", { format: "[align=left]{0}[/align]" })
-		.set("right", { format: "[align=right]{0}[/align]" })
-		.set("justify", { format: "[align=justify]{0}[/align]" });
+		.set('center', { format: '[align=center]{0}[/align]' })
+		.set('left', { format: '[align=left]{0}[/align]' })
+		.set('right', { format: '[align=right]{0}[/align]' })
+		.set('justify', { format: '[align=justify]{0}[/align]' });
 
 	$.sceditor.command
-		.set("center", { txtExec: ["[align=center]", "[/align]"] })
-		.set("left", { txtExec: ["[align=left]", "[/align]"] })
-		.set("right", { txtExec: ["[align=right]", "[/align]"] })
-		.set("justify", { txtExec: ["[align=justify]", "[/align]"] });
+		.set('center', { txtExec: ['[align=center]', '[/align]'] })
+		.set('left', { txtExec: ['[align=left]', '[/align]'] })
+		.set('right', { txtExec: ['[align=right]', '[/align]'] })
+		.set('justify', { txtExec: ['[align=justify]', '[/align]'] });
 
 
 
@@ -28,7 +32,7 @@ jQuery(document).ready(function($) {
 	 * Update font to support MyBB's BBCode dialect *
 	 ************************************************/
 	$.sceditor.plugins.bbcode.bbcode
-		.set("list", {
+		.set('list', {
 			html: function(element, attrs, content) {
 				var type = (attrs.defaultattr === '1' ? 'ol' : 'ul');
 
@@ -40,20 +44,20 @@ jQuery(document).ready(function($) {
 
 			breakAfter: false
 		})
-		.set("ul", { format: "[list]{0}[/list]" })
-		.set("ol", {
+		.set('ul', { format: '[list]{0}[/list]' })
+		.set('ol', {
 			format: function($elm, content) {
 				var type = ($elm.attr('type') === 'a' ? 'a' : '1');
 
 				return '[list=' + type + ']' + content + '[/list]';
 			}
 		})
-		.set("li", { format: "[*]{0}", excludeClosing: true })
-		.set("*", { excludeClosing: true, isInline: false });
+		.set('li', { format: '[*]{0}', excludeClosing: true })
+		.set('*', { excludeClosing: true, isInline: false });
 
 	$.sceditor.command
-		.set("bulletlist", { txtExec: ["[list]\n[*]", "\n[/list]"] })
-		.set("orderedlist", { txtExec: ["[list=1]\n[*]", "\n[/list]"] });
+		.set('bulletlist', { txtExec: ['[list]\n[*]', '\n[/list]'] })
+		.set('orderedlist', { txtExec: ['[list=1]\n[*]', '\n[/list]'] });
 
 
 
@@ -71,9 +75,9 @@ jQuery(document).ready(function($) {
 				fontSize = $elm.css('fontSize');
 
 				// Most browsers return px value but IE returns 1-7
-				if(fontSize.indexOf("px") > -1) {
+				if(fontSize.indexOf('px') > -1) {
 					// convert size to an int
-					fontSize = fontSize.replace("px", "") - 0;
+					fontSize = fontSize.replace('px', '') - 0;
 					size     = 1;
 
 					if(fontSize > 9)
@@ -109,7 +113,7 @@ jQuery(document).ready(function($) {
 
 	$.sceditor.command.set('size', {
 		_dropDown: function(editor, caller, callback) {
-			var	content   = $("<div />"),
+			var	content   = $('<div />'),
 				clickFunc = function (e) {
 					callback($(this).data('size'));
 					editor.closeDropDown(true);
@@ -119,7 +123,7 @@ jQuery(document).ready(function($) {
 			for (var i=1; i < 7; i++)
 				content.append($('<a class="sceditor-fontsize-option" data-size="' + i + '" href="#"><font size="' + i + '">' + i + '</font></a>').click(clickFunc));
 
-			editor.createDropDown(caller, "fontsize-picker", content);
+			editor.createDropDown(caller, 'fontsize-picker', content);
 		},
 		txtExec: function(caller) {
 			var	editor = this,
@@ -132,7 +136,7 @@ jQuery(document).ready(function($) {
 					size = (~~size);
 					size = (size > 7) ? 7 : ( (size < 1) ? 1 : size );
 
-					editor.insertText("[size=" + sizes[size] + "]", "[/size]");
+					editor.insertText('[size=' + sizes[size] + ']', '[/size]');
 				}
 			);
 		}
@@ -143,26 +147,26 @@ jQuery(document).ready(function($) {
 	/********************************************
 	 * Update quote to support pid and dateline *
 	 ********************************************/
-	$.sceditor.plugins.bbcode.bbcode.set("quote", {
+	$.sceditor.plugins.bbcode.bbcode.set('quote', {
 		format: function(element, content) {
 			var	author = '',
 				$elm  = $(element),
-				$cite = $elm.children("cite").first();
+				$cite = $elm.children('cite').first();
 
-			if($cite.length === 1 || $elm.data("author")) {
-				author = $cite.text() || $elm.data("author");
+			if($cite.length === 1 || $elm.data('author')) {
+				author = $cite.text() || $elm.data('author');
 
-				$elm.data("author", author);
+				$elm.data('author', author);
 				$cite.remove();
 
-				$elm.children("cite").replaceWith(function() {
+				$elm.children('cite').replaceWith(function() {
 					return $(this).text();
 				});
 
 				content	= this.elementToBbcode($(element));
 				author  = '=' + author;
 			}
-
+// TODO:Update so has latest tweaks in the above from editor
 			if($elm.data('pid'))
 				author += " pid='" + $elm.data('pid') + "'";
 
@@ -197,11 +201,11 @@ jQuery(document).ready(function($) {
 	/************************************************************
 	 * Update font tag to allow limiting to only first in stack *
 	 ************************************************************/
-	$.sceditor.plugins.bbcode.bbcode.set("font", {
+	$.sceditor.plugins.bbcode.bbcode.set('font', {
 		format: function(element, content) {
 			var font;
 
-			if(element[0].nodeName.toLowerCase() !== "font" || !(font = element.attr('face')))
+			if(element[0].nodeName.toLowerCase() !== 'font' || !(font = element.attr('face')))
 				font = element.css('font-family');
 
 			if(sceditor_opts.limitfont)
@@ -235,12 +239,12 @@ jQuery(document).ready(function($) {
 	/*******************
 	 * Init the editor *
 	 *******************/
-	$("#message, #signature").sceditor({
-		style:			"jscripts/sceditor/jquery.sceditor.mybb.css",
-		toolbar:		"bold,italic,underline,strike,subscript,superscript|left,center,right,justify|" +
-					"font,size,color,removeformat|bulletlist,orderedlist|" +
-					"code,quote|horizontalrule,image,email,link,unlink|emoticon,youtube,date,time|" +
-					"print,source",
+	$('#message, #signature').sceditor({
+		style:			'jscripts/sceditor/jquery.sceditor.mybb.css',
+		toolbar:		'bold,italic,underline,strike,subscript,superscript|left,center,right,justify|' +
+					'font,size,color,removeformat|bulletlist,orderedlist|' +
+					'code,quote|horizontalrule,image,email,link,unlink|emoticon,youtube,date,time|' +
+					'print,source',
 		resizeMaxHeight:	800,
 		plugins:		'bbcode',
 		autofocus:		sceditor_opts.autofocus,
@@ -252,16 +256,27 @@ jQuery(document).ready(function($) {
 	});
 
 
+
+	/******************************
+	 * Source mode option support *
+	 ******************************/
+	if(sceditor_opts.sourcemode)
+		$('#message, #signature').sceditor('instance').sourceMode(true);
+
+
+
 	/**************************************************
 	 * Init the editor for xmlhttp calls (Quick Edit) *
 	 **************************************************/
-	$(document).on("focus", 'textarea[id*="quickedit_"]', function () {
+	// $.fn.on || $.fn.live is for compatibility with old jQuery versions.
+	// 1.7+ uses on and 1.3-1.7 uses live
+	($.fn.on || $.fn.live).call($document, 'focus', 'textarea[id*="quickedit_"]', function () {
 		$(this).sceditor({
-			style:			"jscripts/sceditor/jquery.sceditor.mybb.css",
-			toolbar:		"bold,italic,underline,strike,subscript,superscript|left,center,right,justify|" +
-						"font,size,color,removeformat|bulletlist,orderedlist|" +
-						"code,quote|horizontalrule,image,email,link,unlink|emoticon,youtube,date,time|" +
-						"print,source",
+			style:			'jscripts/sceditor/jquery.sceditor.mybb.css',
+			toolbar:		'bold,italic,underline,strike,subscript,superscript|left,center,right,justify|' +
+						'font,size,color,removeformat|bulletlist,orderedlist|' +
+						'code,quote|horizontalrule,image,email,link,unlink|emoticon,youtube,date,time|' +
+						'print,source',
 			resizeMaxHeight:	800,
 			plugins:		'bbcode',
 			autofocus:		sceditor_opts.autofocus,
@@ -271,30 +286,21 @@ jQuery(document).ready(function($) {
 			enablePasteFiltering:   true,
 			autofocusEnd:           true
 		});
+
+		if(sceditor_opts.sourcemode)
+			$(this).sceditor('instance').sourceMode(true);
 	});
-
-
-
-	/******************************
-	 * Source mode option support *
-	 ******************************/
-	if(sceditor_opts.sourcemode) {
-		$("#message, #signature").sceditor("instance").sourceMode(true);
-		$(document).on("focus", 'textarea[id*="quickedit_"]', function() {
-			$(this).sceditor("instance").sourceMode(true);
-		});
-	}
 
 
 
 	/**************************
 	 * Emoticon click support *
 	 **************************/
-	$("#clickable_smilies img").each(function() {
+	$('#clickable_smilies img').each(function() {
 		$(this).css('cursor', 'pointer');
 
 		$(this).click(function() {
-			$("#message, #signature").data("sceditor").insert($(this).attr('alt'));
+			$('#message, #signature').data('sceditor').insert($(this).attr('alt'));
 			return false;
 		});
 	});
@@ -304,14 +310,14 @@ jQuery(document).ready(function($) {
 	/****************************
 	 * Emoticon disable support *
 	 ****************************/
-	var $checkbox = $("input[name=postoptions\\[disablesmilies\\]], input[name=options\\[disablesmilies\\]]");
+	var $checkbox = $('input[name=postoptions\\[disablesmilies\\]], input[name=options\\[disablesmilies\\]]');
 
 	$checkbox.change(function() {
-		$("#message, #signature").sceditor("instance").emoticons(!this.checked);
+		$('#message, #signature').sceditor('instance').emoticons(!this.checked);
 	});
 
 	if($checkbox.length)
-		$("#message, #signature").sceditor("instance").emoticons(!$checkbox[0].checked);
+		$('#message, #signature').sceditor('instance').emoticons(!$checkbox[0].checked);
 
 
 
@@ -319,11 +325,11 @@ jQuery(document).ready(function($) {
 	 * clickableEditor compat functions *
 	 ************************************/
 	clickableEditor.insertAttachment = function(aid) {
-		$("#message, #signature").data("sceditor").insertText('[attachment='+aid+']');
+		$('#message, #signature').data('sceditor').insertText('[attachment='+aid+']');
 	};
 
 	clickableEditor.performInsert = function(code) {
-		$("#message, #signature").data("sceditor").insert(code);
+		$('#message, #signature').data('sceditor').insert(code);
 	};
 
 	clickableEditor.openGetMoreSmilies = function(editor)
@@ -336,11 +342,11 @@ jQuery(document).ready(function($) {
 	/****************************
 	 * Form reset compatibility *
 	 ****************************/
-	var textarea = $("#message, #signature").get(0);
+	var textarea = $('#message, #signature').get(0);
 	if(textarea)
 	{
-		$(textarea.form).bind("reset", function() {
-			$("#message, #signature").data("sceditor").val("").emoticons(true);
+		$(textarea.form).bind('reset', function() {
+			$('#message, #signature').data('sceditor').val('').emoticons(true);
 		});
 	}
 });
@@ -350,13 +356,13 @@ jQuery(document).ready(function($) {
 /**********************************
  * Thread compatibility functions *
  **********************************/
-if(typeof Thread !== "undefined")
+if(typeof Thread !== 'undefined')
 {
 	var quickReplyFunc = Thread.quickReply;
 	// update the textarea to the editors value before the Thread class
 	// uses it for quickReply, ect.
 	Thread.quickReply = function(e) {
-		var editor = jQuery("#message, #signature").data("sceditor");
+		var editor = jQuery('#message, #signature').data('sceditor');
 
 		if(editor)
 			editor.updateOriginal();
@@ -384,16 +390,16 @@ if(typeof Thread !== "undefined")
 		else if(request.responseText)
 		{
 // Add newline if has val?
-			jQuery("pid_"+pid).innerHTML = request.responseText;
+			jQuery('pid_'+pid).innerHTML = request.responseText;
 
-			var element = jQuery("#quickedit_"+pid);
+			var element = jQuery('#quickedit_' + pid);
 			// get the textarea offset before it gets hidden by the editor
 			var offset = element.offset().top-100;
 			// automatically trigger the editor by focusing the textarea
 			element.focus();
 
 			// elegantly scroll to the editor
-			jQuery("html, body").animate({
+			jQuery('html, body').animate({
 				scrollTop: offset
 			}, 700);
 		}
@@ -416,7 +422,7 @@ if(typeof Thread !== "undefined")
 	// update the textarea before sending it to xmlhttp.php
 	// used for quickedit
 	Thread.quickEditSave = function(pid) {
-		var editor = jQuery("#quickedit_"+pid).data("sceditor");
+		var editor = jQuery('#quickedit_' + pid).data('sceditor');
 
 		if(editor)
 			editor.updateOriginal();
