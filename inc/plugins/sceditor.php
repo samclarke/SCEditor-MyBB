@@ -427,8 +427,8 @@ function sceditor_load($page)
 	// strip the default editor
 	$page = str_replace(build_mycode_inserter(THIS_SCRIPT === 'usercp.php' ? 'signature' : 'message'), "", $page);
 
-	// add the editors JS
-	return str_replace('</head>', $js . '</head>', $page);
+	// Add the editors JS to the bottom of the page
+	return str_replace('</body>', $js . '</body>', $page);
 }
 
 function sceditor_sidebar_emoticons()
