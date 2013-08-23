@@ -153,20 +153,19 @@ jQuery(document).ready(function($) {
 				$elm  = $(element),
 				$cite = $elm.children('cite').first();
 
-			if($cite.length === 1 || $elm.data('author')) {
+			if($cite.length === 1 || $elm.data('author'))
+			{
 				author = $cite.text() || $elm.data('author');
 
 				$elm.data('author', author);
 				$cite.remove();
 
-				$elm.children('cite').replaceWith(function() {
-					return $(this).text();
-				});
-
 				content	= this.elementToBbcode($(element));
 				author  = '=' + author;
+
+				$elm.prepend($cite);
 			}
-// TODO:Update so has latest tweaks in the above from editor
+
 			if($elm.data('pid'))
 				author += " pid='" + $elm.data('pid') + "'";
 
