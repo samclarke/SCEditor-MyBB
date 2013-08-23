@@ -4,22 +4,22 @@
  *
  * @author Sam Clarke
  * @created 22/06/12
- * @version 1.4.2
+ * @version 1.4.4
  * @contact sam@sceditor.com
  * @license GPL
  */
 
-if(!defined("IN_MYBB"))
-	die("You cannot directly access this file.");
+if(!defined('IN_MYBB'))
+	die('You cannot directly access this file.');
 
-define('SCEDITOR_PLUGIN_VER', '1.4.2');
+define('SCEDITOR_PLUGIN_VER', '1.4.4');
 
 
-$plugins->add_hook("pre_output_page",         "sceditor_load", 100);
-$plugins->add_hook("global_start",            "sceditor_sidebar_emoticons");
-$plugins->add_hook("parse_message",           "sceditor_parse");
-$plugins->add_hook("datahandler_user_update", "sceditor_usercp_update");
-$plugins->add_hook("usercp_options_end",      "sceditor_usercp_options");
+$plugins->add_hook('pre_output_page',         'sceditor_load', 100);
+$plugins->add_hook('global_start',            'sceditor_sidebar_emoticons');
+$plugins->add_hook('parse_message',           'sceditor_parse');
+$plugins->add_hook('datahandler_user_update', 'sceditor_usercp_update');
+$plugins->add_hook('usercp_options_end',      'sceditor_usercp_options');
 
 function sceditor_info()
 {
@@ -28,14 +28,14 @@ function sceditor_info()
 	$lang->load('config_sceditor');
 
 	return array(
-		"name"          => $lang->sceditor_title,
-		"description"   => $lang->sceditor_desc,
-		"website"       => "http://www.sceditor.com/",
-		"author"        => "Sam Clarke",
-		"authorsite"    => "http://www.samclarke.com/",
-		"version"       => SCEDITOR_PLUGIN_VER,
-		"guid"          => "aaaec079369b70e0915fdd2b959093e3",
-		"compatibility" => "16*"
+		'name'          => $lang->sceditor_title,
+		'description'   => $lang->sceditor_desc,
+		'website'       => 'http://www.sceditor.com/',
+		'author'        => 'Sam Clarke',
+		'authorsite'    => 'http://www.samclarke.com/',
+		'version'       => SCEDITOR_PLUGIN_VER,
+		'guid'          => 'aaaec079369b70e0915fdd2b959093e3',
+		'compatibility' => '16*'
 	);
 }
 
@@ -48,9 +48,9 @@ function sceditor_install()
 	$db->write_query('ALTER TABLE `'.TABLE_PREFIX.'users` ADD `sceditor_enable` INT(1) NOT NULL DEFAULT \'1\', ADD `sceditor_sourcemode` INT(1) NOT NULL DEFAULT \'0\';');
 
 	$query  = $db->simple_select("settinggroups", "COUNT(*) as rows");
-	$dorder = $db->fetch_field($query, "rows") + 1;
+	$dorder = $db->fetch_field($query, 'rows') + 1;
 
-	$groupid = $db->insert_query("settinggroups", array(
+	$groupid = $db->insert_query('settinggroups', array(
 		'name'		=> 'sceditor',
 		'title'		=> 'SCEditor',
 		'description'	=> 'Settings related to the SCEditor WYSIWYG BBCode editor.',
@@ -59,7 +59,7 @@ function sceditor_install()
 	));
 
 
-	$db->insert_query("settings", array(
+	$db->insert_query('settings', array(
 		'name'		=> 'enablesceditor',
 		'title'		=> $lang->enablesceditor_title,
 		'description'	=> $lang->enablesceditor_desc,
@@ -69,7 +69,7 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
-	$db->insert_query("settings", array(
+	$db->insert_query('settings', array(
 		'name'		=> 'enablesceditor_newpost',
 		'title'		=> $lang->enablesceditor_newpost_title,
 		'description'	=> $lang->enablesceditor_newpost_desc,
@@ -79,7 +79,7 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
-	$db->insert_query("settings", array(
+	$db->insert_query('settings', array(
 		'name'		=> 'enablesceditor_quickreply',
 		'title'		=> $lang->enablesceditor_quickreply_title,
 		'description'	=> $lang->enablesceditor_quickreply_desc,
@@ -89,7 +89,7 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
-	$db->insert_query("settings", array(
+	$db->insert_query('settings', array(
 		'name'		=> 'enablesceditor_signature',
 		'title'		=> $lang->enablesceditor_signature_title,
 		'description'	=> $lang->enablesceditor_signature_desc,
@@ -99,7 +99,7 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
-	$db->insert_query("settings", array(
+	$db->insert_query('settings', array(
 		'name'		=> 'enablesceditor_pm',
 		'title'		=> $lang->enablesceditor_pm_title,
 		'description'	=> $lang->enablesceditor_pm_desc,
@@ -109,7 +109,7 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
-	$db->insert_query("settings", array(
+	$db->insert_query('settings', array(
 		'name'		=> 'enablesceditor_event',
 		'title'		=> $lang->enablesceditor_event_title,
 		'description'	=> $lang->enablesceditor_event_desc,
@@ -119,7 +119,7 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
-	$db->insert_query("settings", array(
+	$db->insert_query('settings', array(
 		'name'		=> 'sceditor_theme',
 		'title'		=> $lang->sceditor_theme_title,
 		'description'	=> $lang->sceditor_theme_desc,
@@ -134,7 +134,7 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
-	$db->insert_query("settings", array(
+	$db->insert_query('settings', array(
 		'name'		=> 'sceditor_include_jquery',
 		'title'		=> $lang->sceditor_include_jquery_title,
 		'description'	=> $lang->sceditor_include_jquery_desc,
@@ -144,7 +144,7 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
-	$db->insert_query("settings", array(
+	$db->insert_query('settings', array(
 		'name'		=> 'sceditor_enable_jquery_noconflict',
 		'title'		=> $lang->sceditor_enable_jquery_noconflict_title,
 		'description'	=> $lang->sceditor_enable_jquery_noconflict_desc,
@@ -154,7 +154,7 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
-	$db->insert_query("settings", array(
+	$db->insert_query('settings', array(
 		'name'		=> 'sceditor_lang',
 		'title'		=> $lang->sceditor_lang_title,
 		'description'	=> $lang->sceditor_lang_desc,
@@ -166,32 +166,38 @@ function sceditor_install()
 					// English is the most common.
 					// The rest should be sorted alphabetically.
 					"ar=Arabic\n" .
+					"cn=Chinese\n" .
 					"nl=Dutch\n" .
 					"et=Estonian\n" .
 					"fr=French\n" .
 					"de=German\n" .
-					"no=Norwegian\n" .
+					"el=Greek\n" .
+					"hu=Hungarian\n" .
+					"nb=Norwegian\n" .
+					"fa=Persian\n" .
+					"pl=Polish\n" .
 					"pt-BR=Brazilian Portuguese\n" .
 					"ru=Russian\n" .
 					"es=Spanish\n" .
 					"sv=Swedish\n" .
+					"tr=Turkish\n" .
 					"vi=Vietnamese",
 		'value'		=> 'default',
 		'disporder'	=> '10',
 		'gid'		=> $groupid
 	));
 
-	$db->insert_query("settings", array(
+	$db->insert_query('settings', array(
 		'name'		=> 'sceditor_excluded_themes',
 		'title'		=> $lang->sceditor_excluded_themes_title,
 		'description'	=> $lang->sceditor_excluded_themes_desc,
-		'optionscode'	=> "",
+		'optionscode'	=> '',
 		'value'		=> '',
 		'disporder'	=> '11',
 		'gid'		=> $groupid
 	));
 
-	$db->insert_query("settings", array(
+	$db->insert_query('settings', array(
 		'name'		=> 'sceditor_enable_user_choice',
 		'title'		=> $lang->sceditor_enable_user_choice_title,
 		'description'	=> $lang->sceditor_enable_user_choice_desc,
@@ -201,7 +207,7 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
-	$db->insert_query("settings", array(
+	$db->insert_query('settings', array(
 		'name'		=> 'sceditor_enable_sidebar_emoticons',
 		'title'		=> $lang->sceditor_enable_sidebar_emoticons_title,
 		'description'	=> $lang->sceditor_enable_sidebar_emoticons_desc,
@@ -211,7 +217,7 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
-	$db->insert_query("settings", array(
+	$db->insert_query('settings', array(
 		'name'		=> 'sceditor_limit_font',
 		'title'		=> $lang->sceditor_limit_font_title,
 		'description'	=> $lang->sceditor_limit_font_desc,
@@ -229,7 +235,7 @@ function sceditor_is_installed()
 	global $db;
 
 	$query = $db->simple_select("settinggroups", "COUNT(*) as rows", "name = 'sceditor'");
-	$rows  = $db->fetch_field($query, "rows");
+	$rows  = $db->fetch_field($query, 'rows');
 
 	return ($rows > 0);
 }
@@ -238,7 +244,7 @@ function sceditor_uninstall()
 {
 	global $db;
 
-	$db->write_query("DELETE FROM ".TABLE_PREFIX."settings WHERE name IN(
+	$db->write_query("DELETE FROM " . TABLE_PREFIX . "settings WHERE name IN(
 		'enablesceditor',
 		'enablesceditor_newpost',
 		'enablesceditor_quickreply',
@@ -250,8 +256,8 @@ function sceditor_uninstall()
 
 	$db->delete_query("settinggroups", "name = 'sceditor'");
 
-	$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` DROP `sceditor_enable`");
-	$db->write_query("ALTER TABLE `".TABLE_PREFIX."users` DROP `sceditor_sourcemode`");
+	$db->write_query("ALTER TABLE `" . TABLE_PREFIX . "users` DROP `sceditor_enable`");
+	$db->write_query("ALTER TABLE `" . TABLE_PREFIX . "users` DROP `sceditor_sourcemode`");
 }
 
 function sceditor_activate()
@@ -285,39 +291,40 @@ function sceditor_load($page)
 		return false;
 
 	// check if editor should be enabled on this theme
-	if(strrpos("," . strtolower($mybb->settings['sceditor_excluded_themes']) . ",", "," . strtolower($theme['name']) . ",") !== false)
+	if(strrpos(',' . strtolower($mybb->settings['sceditor_excluded_themes']) . ',', ',' . strtolower($theme['name']) . ',') !== false)
 		return false;
 
-	if(THIS_SCRIPT == "misc.php" && $mybb->input['action'] == "smilies")
+	// Make insert method pass the src along with the code
+	if(THIS_SCRIPT == 'misc.php' && $mybb->input['action'] == 'smilies')
 	{
-		$page = str_replace("function insertSmilie(code)", "function insertSmilie(code, src)", $page);
-		$page = str_replace("editor.performInsert(code, \"\", true, false);", "editor.performInsert(code, src);", $page);
+		$page = str_replace('function insertSmilie(code)', 'function insertSmilie(code, src)', $page);
+		$page = str_replace('editor.performInsert(code, "", true, false);', 'editor.performInsert(code, src);', $page);
 
 		return $page;
 	}
 
 	switch(THIS_SCRIPT)
 	{
-		case "newreply.php":
-		case "newthread.php":
-		case "editpost.php":
+		case 'newreply.php':
+		case 'newthread.php':
+		case 'editpost.php':
 			if(!$mybb->settings['enablesceditor_newpost'])
 				return false;
 			break;
-		case "showthread.php":
+		case 'showthread.php':
 			if(!$mybb->settings['enablesceditor_quickreply'])
 				return false;
 			break;
-		case "usercp.php":
-			if($mybb->input['action'] != "editsig" || !$mybb->settings['enablesceditor_signature'])
+		case 'usercp.php':
+			if($mybb->input['action'] != 'editsig' || !$mybb->settings['enablesceditor_signature'])
 				return false;
 			break;
-		case "private.php":
+		case 'private.php':
 			if(!$mybb->settings['enablesceditor_pm'])
 				return false;
 			break;
-		case "calendar.php":
-			if($mybb->input['action'] != "addevent" || !$mybb->settings['enablesceditor_event'])
+		case 'calendar.php':
+			if($mybb->input['action'] != 'addevent' || !$mybb->settings['enablesceditor_event'])
 				return false;
 			break;
 		default:
@@ -326,7 +333,7 @@ function sceditor_load($page)
 
 
 	// sort and output emoticons
-	$smilie_cache = $cache->read("smilies");
+	$smilie_cache = $cache->read('smilies');
 	$smilies = array();
 	$hiddensmilies = array();
 	foreach($smilie_cache as $smilie) {
@@ -348,8 +355,8 @@ function sceditor_load($page)
 		return 1;
 	}
 
-	uksort($smilies, "smilie_len_cmp");
-	uksort($hiddensmilies, "smilie_len_cmp");
+	uksort($smilies, 'smilie_len_cmp');
+	uksort($hiddensmilies, 'smilie_len_cmp');
 
 
 
@@ -360,10 +367,31 @@ function sceditor_load($page)
 	$mybb_emoticons     = json_encode(array( 'dropdown' => $smilies, 'hidden' => $hiddensmilies ));
 	$sceditor_autofocus = (THIS_SCRIPT != "showthread.php" ? 'true' : 'false');
 	$limit_font_tag     = $mybb->settings['sceditor_limit_font'] ? 'true' : 'false';
-
+	$available_locales  = array(
+		'en',
+		'en-US',
+		'en-GB',
+		'ar',
+		'cn',
+		'de',
+		'el',
+		'es',
+		'et',
+		'fa',
+		'fr',
+		'hu',
+		'nb',
+		'nl',
+		'pl',
+		'pt-BR',
+		'ru',
+		'sv',
+		'tr',
+		'vi'
+	);
 
 	// Use users language if available
-	if(in_array($lang->settings['htmllang'], array('en', 'en-US', 'en-GB', 'ar', 'nl', 'et', 'fr', 'de', 'no', 'pt-BR', 'ru', 'es', 'sv', 'vi')))
+	if(in_array($lang->settings['htmllang'], $available_locales))
 		$sceditor_lang = $lang->settings['htmllang'];
 
 	// en-GB is just called en by SCEditor
@@ -407,8 +435,8 @@ function sceditor_sidebar_emoticons()
 {
 	global $mybb;
 
-	if(THIS_SCRIPT === "usercp.php")
-		if($myb->input['action'] != "editsig" || !$mybb->settings['enablesceditor_signature'])
+	if(THIS_SCRIPT === 'usercp.php')
+		if($myb->input['action'] != 'editsig' || !$mybb->settings['enablesceditor_signature'])
 			return false;
 
 	if($mybb->settings['enablesceditor'] && $mybb->user['sceditor_enable'])

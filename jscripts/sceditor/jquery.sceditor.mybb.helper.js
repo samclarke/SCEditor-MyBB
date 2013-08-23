@@ -250,8 +250,8 @@ jQuery(document).ready(function($) {
 		enablePasteFiltering:   true,
 		autofocusEnd:           true
 	});
-	
-	
+
+
 	/**************************************************
 	 * Init the editor for xmlhttp calls (Quick Edit) *
 	 **************************************************/
@@ -361,49 +361,57 @@ if(typeof Thread !== "undefined")
 		if(editor)
 			editor.updateOriginal();
 
-		return quickReplyFunc.call(Thread, e);
+		return quickReplyFunc.call(this, e);
 	};
-	
+
 	// scrollTo fix
 	Thread.quickEditLoaded = function(request, pid)
 	{
+		var message;
+
 		if(request.responseText.match(/<error>(.*)<\/error>/))
 		{
 			message = request.responseText.match(/<error>(.*)<\/error>/);
-			if(!message[1])
-			{
-				message[1] = "An unknown error occurred.";
-			}
+
 			if(this.spinner)
 			{
 				this.spinner.destroy();
 				this.spinner = '';
 			}
-			alert('There was an error performing the update.\n\n'+message[1]);
-			Thread.qeCache[pid] = "";
+
+			alert('There was an error fetching the posts.\n\n'+(message[1] || "An unknown error occurred."));
 		}
 		else if(request.responseText)
 		{
-			$("pid_"+pid).innerHTML = request.responseText;
-			element = jQuery("#quickedit_"+pid);
+// Add newline if has val?
+			jQuery("pid_"+pid).innerHTML = request.responseText;
+
+			var element = jQuery("#quickedit_"+pid);
 			// get the textarea offset before it gets hidden by the editor
-			offset = element.offset().top-100;
+			var offset = element.offset().top-100;
 			// automatically trigger the editor by focusing the textarea
 			element.focus();
-			
+
 			// elegantly scroll to the editor
 			jQuery("html, body").animate({
 				scrollTop: offset
 			}, 700);
 		}
+
+		Thread.clearMultiQuoted();
+		$('quickreply_multiquote').hide();
+		$('quoted_ids').value = 'all';
+
 		if(this.spinner)
 		{
 			this.spinner.destroy();
 			this.spinner = '';
 		}
+
+		jQuery('message').focus();
 	};
-	
-	
+
+
 	var quickEditSaveFunc = Thread.quickEditSave;
 	// update the textarea before sending it to xmlhttp.php
 	// used for quickedit
@@ -413,16 +421,16 @@ if(typeof Thread !== "undefined")
 		if(editor)
 			editor.updateOriginal();
 
-		return quickEditSaveFunc.call(Thread, pid);
+		return quickEditSaveFunc.call(this, pid);
 	};
 
 	Thread.multiQuotedLoaded = function(request)
 	{
+		var message, editor;
+
 		if(request.responseText.match(/<error>(.*)<\/error>/))
 		{
 			message = request.responseText.match(/<error>(.*)<\/error>/);
-			if(!message[1])
-				message[1] = "An unknown error occurred.";
 
 			if(this.spinner)
 			{
@@ -430,11 +438,11 @@ if(typeof Thread !== "undefined")
 				this.spinner = '';
 			}
 
-			alert('There was an error fetching the posts.\n\n'+message[1]);
+			alert('There was an error fetching the posts.\n\n'+(message[1] || "An unknown error occurred."));
 		}
 		else if(request.responseText)
 		{
-			var editor = jQuery("#message, #signature").data("sceditor");
+			editor = jQuery("#message, #signature").data("sceditor");
 
 			if(editor)
 				editor.insert(request.responseText);
