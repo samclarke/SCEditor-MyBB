@@ -44,3 +44,6 @@ $l['sceditor_enable_sidebar_emoticons_desc']  = "If to show the emoticons on the
 
 $l['sceditor_limit_font_title']               = "Limit [font]";
 $l['sceditor_limit_font_desc']                = "If to only keep the first copied font in a font stack.";
+
+$l['sceditor_partial_mode_title']             = "Enable Partial Mode";
+$l['sceditor_partial_mode_desc']              = "Disables [code], [quote] and [video] in WYSIWYG mode.";

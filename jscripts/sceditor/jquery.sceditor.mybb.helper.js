@@ -343,8 +343,21 @@ jQuery(document).ready(function($) {
 	/********************************************
 	 * Remove code and quote if in partial mode *
 	 ********************************************/
-	//if(sceditor_opts.partialmode)
-	//	$.sceditor.plugins.bbcode.bbcode.remove('code').remove('quote');
+	if(sceditor_opts.partialmode)
+	{
+		$.sceditor.plugins.bbcode.bbcode.remove('code').remove('quote').remove('video');
+		$.sceditor.command
+			.set('code', {
+				exec: function() {
+					this.insert('[code]', '[/code]');
+				}
+			})
+			.set('quote', {
+				exec: function() {
+					this.insert('[quote]', '[/quote]');
+				}
+			});
+	}
 
 
 

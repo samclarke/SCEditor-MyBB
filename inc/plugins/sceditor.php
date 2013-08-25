@@ -227,6 +227,16 @@ function sceditor_install()
 		'gid'		=> $groupid
 	));
 
+	$db->insert_query('settings', array(
+		'name'		=> 'sceditor_partial_mode',
+		'title'		=> $lang->sceditor_partial_mode_title,
+		'description'	=> $lang->sceditor_partial_mode_desc,
+		'optionscode'	=> 'yesno',
+		'value'		=> '0',
+		'disporder'	=> '15',
+		'gid'		=> $groupid
+	));
+
 	rebuild_settings();
 }
 
@@ -367,6 +377,7 @@ function sceditor_load($page)
 	$mybb_emoticons     = json_encode(array( 'dropdown' => $smilies, 'hidden' => $hiddensmilies ));
 	$sceditor_autofocus = (THIS_SCRIPT != "showthread.php" ? 'true' : 'false');
 	$limit_font_tag     = $mybb->settings['sceditor_limit_font'] ? 'true' : 'false';
+	$partial_mode       = $mybb->settings['sceditor_partial_mode'] ? 'true' : 'false';
 	$available_locales  = array(
 		'en',
 		'en-US',
@@ -416,6 +427,7 @@ function sceditor_load($page)
 				autofocus:   '  . $sceditor_autofocus . ',
 				lang:        "' . $sceditor_lang . '",
 				limitfont:   '  . $limit_font_tag . ',
+				partialmode: '  . $partial_mode . ',
 				sourcemode:  '  . $mybb->user['sceditor_sourcemode'] . '
 			};
 		</script>
