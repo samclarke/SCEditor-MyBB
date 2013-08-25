@@ -9,10 +9,10 @@ jQuery(document).ready(function($) {
 	/***********************
 	 * Add custom MyBB CSS *
 	 ***********************/
-	$('<style>' +
+	$('<style type="text/css">' +
 		'.sceditor-dropdown { text-align: ' + ($('body').css('direction') === 'rtl' ? 'right' :'left') + '; }' +
-		'.sceditor-button.sceditor-button-video div {background-image:url(\'jscripts/sceditor/themes/film.png\');}' +
-	'</style>').appendTo('head');
+		'.sceditor-container .sceditor-button-video div {background-image:url(\'jscripts/sceditor/themes/film.png\');}' +
+	'</style>').appendTo('body');
 
 
 
