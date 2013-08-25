@@ -2,9 +2,16 @@
 
 ## Download
 
-~~Releases will be added to the [downloads page](https://github.com/samclarke/SCEditor-MyBB/downloads).~~ GitHub has deprecated downloads.
+Releases can be downloaded from the [releases page](https://github.com/samclarke/SCEditor-MyBB/releases).
 
-Releases will now be tagged and can be [downloaded from here](https://github.com/samclarke/SCEditor-MyBB/tags). Just click `Source code (zip)` or `Source code (tar.gz)` to download.
+### Installation
+
+1. Upload all the files in the `inc/` and `jscripts/` directories to the MyBB `inc/` and `jscripts/` directories on the server.
+2. Once the files are uploaded, go to `Admin CP -> Configuration -> Plugins`.
+3. Look for `SCEditor WYSIWYG editor` in the plugins list and click `Install & Activate`.
+4. Done!
+
+All the plugin settings can be changed by going to `Admin CP -> Configuration -> Settings -> SCEditor`.
 
 
 ## License
@@ -12,13 +19,13 @@ Releases will now be tagged and can be [downloaded from here](https://github.com
 SCEditor MyBB plugin is licensed under the [GNU GPL](http://www.gnu.org/licenses/gpl.html) license.
 
 
-## Donate
+### Donate
 
 If you would like to make a donation you can via
 [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=AVJSF5NEETYYG).
 
 
-## Credits
+### Credits
 
 **Icons by:**
 
