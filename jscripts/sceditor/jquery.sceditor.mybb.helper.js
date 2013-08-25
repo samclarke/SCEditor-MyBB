@@ -5,6 +5,17 @@ jQuery(document).ready(function($) {
 
 	var $document = $(document);
 
+
+	/***********************
+	 * Add custom MyBB CSS *
+	 ***********************/
+	$('<style>' +
+		'.sceditor-dropdown { text-align: ' + ($('body').css('direction') === 'rtl' ? 'right' :'left') + '; }' +
+		'.sceditor-button-video div {background-image:url(\'jscripts/sceditor/themes/film.png\');}' +
+	'</style>').appendTo('head');
+
+
+
 	/********************************************
 	 * Update editor to use align= as alignment *
 	 ********************************************/
@@ -216,6 +227,108 @@ jQuery(document).ready(function($) {
 
 
 
+	/**************************
+	 * Add MyBB video command *
+	 **************************/
+	$.sceditor.plugins.bbcode.bbcode.set('video', {
+		allowsEmpty: true,
+		tags: {
+			iframe: {
+				'data-mybb-vt': null
+			}
+		},
+		format: function($element, content) {
+			return '[video=' + $element.data('mybb-vt') + ']' + $element.data('mybb-vsrc') + '[/video]';
+		},
+		html: function(token, attrs, content) {
+			var	matches, url,
+				html = {
+					dailymotion: '<iframe frameborder="0" width="480" height="270" src="{url}" data-mybb-vt="{type}" data-mybb-vsrc="{src}"></iframe>',
+					metacafe: '<iframe src="{url}" width="440" height="248" frameborder=0 data-mybb-vt="{type}" data-mybb-vsrc="{src}"></iframe>',
+					vimeo: '<iframe src="{url}" width="500" height="281" frameborder="0" data-mybb-vt="{type}" data-mybb-vsrc="{src}"></iframe>',
+					youtube: '<iframe width="560" height="315" src="{url}" frameborder="0" data-mybb-vt="{type}" data-mybb-vsrc="{src}"></iframe>'
+				};
+
+			if(html[attrs.defaultattr])
+			{
+				switch(attrs.defaultattr)
+				{
+					case 'dailymotion':
+						matches = content.match(/dailymotion\.com\/video\/([^_]+)/);
+						url     = matches ? 'http://www.dailymotion.com/embed/video/' + matches[1] : false;
+						break;
+					case 'metacafe':
+						matches = content.match(/metacafe\.com\/watch\/([^\/]+)/);
+						url     = matches ? 'http://www.metacafe.com/embed/' + matches[1] : false;
+						break;
+					case 'vimeo':
+						matches = content.match(/vimeo.com\/(\d+)($|\/)/);
+						url     = matches ? '//player.vimeo.com/video/' + matches[1] : false;
+						break;
+					case 'youtube':
+						matches = content.match(/(?:v=|v\/|embed\/|youtu\.be\/)(.{11})/);
+						url     = matches ? '//www.youtube.com/embed/' + matches[1] : false;
+						break;
+				}
+
+				if(url)
+				{
+					return html[attrs.defaultattr]
+						.replace('{url}', url)
+						.replace('{src}', content)
+						.replace('{type}', attrs.defaultattr);
+				}
+			}
+
+			return token.val + content + (token.closing ? token.closing.val : '');
+		}
+	});
+	$.sceditor.command.set('video', {
+		_dropDown: function (editor, caller) {
+			var $content, videourl, videotype;
+
+			// Excludes MySpace TV and Yahoo Video as I couldn't actually find them. Maybe they are gone now?
+			$content = $(
+				'<div>' +
+					'<label for="videotype">' + editor._('Video Type:') + '</label> ' +
+					'<select id="videotype">' +
+						'<option value="dailymotion">Dailymotion</option>' +
+						'<option value="metacafe">MetaCafe</option>' +
+						'<option value="vimeo">Vimeo</option>' +
+						'<option value="youtube">Youtube</option>' +
+					'</select>'+
+				'</div>' +
+				'<div>' +
+					'<label for="link">' + editor._('Video URL:') + '</label> ' +
+					'<input type="text" id="videourl" value="http://" />' +
+				'</div>' +
+				'<div><input type="button" class="button" value="' + editor._('Insert') + '" /></div>'
+			);
+
+			$content.find('.button').click(function (e) {
+				videourl  = $content.find('#videourl').val();
+				videotype = $content.find('#videotype').val();
+
+				if (videourl !== '' && videourl !== 'http://')
+					editor.insert('[video=' + videotype + ']' + videourl + '[/video]');
+
+				editor.closeDropDown(true);
+				e.preventDefault();
+			});
+
+			editor.createDropDown(caller, 'insertvideo', $content);
+		},
+		exec: function (caller) {
+			$.sceditor.command.get('video')._dropDown(this, caller);
+		},
+		txtExec: function (caller) {
+			$.sceditor.command.get('video')._dropDown(this, caller);
+		},
+		tooltip: 'Insert a video'
+	});
+
+
+
 	/*************************************
 	 * Remove last bits of table support *
 	 *************************************/
@@ -238,21 +351,22 @@ jQuery(document).ready(function($) {
 	/*******************
 	 * Init the editor *
 	 *******************/
-	$('#message, #signature').sceditor({
+	var editor_opts = {
 		style:			'jscripts/sceditor/jquery.sceditor.mybb.css',
 		toolbar:		'bold,italic,underline,strike,subscript,superscript|left,center,right,justify|' +
-					'font,size,color,removeformat|bulletlist,orderedlist|' +
-					'code,quote|horizontalrule,image,email,link,unlink|emoticon,youtube,date,time|' +
-					'print,source',
+					'font,size,color,removeformat|bulletlist,orderedlist|code,quote|horizontalrule,' +
+					'image,email,link,unlink|emoticon,video,date,time|print,source',
 		resizeMaxHeight:	800,
+		rtl:			null,
 		plugins:		'bbcode',
 		autofocus:		sceditor_opts.autofocus,
 		locale:			sceditor_opts.lang,
-		rtl:			null,
 		emoticons:		sceditor_opts.emoticons,
 		enablePasteFiltering:   true,
 		autofocusEnd:           true
-	});
+	};
+
+	$('#message, #signature').sceditor(editor_opts);
 
 
 
@@ -270,21 +384,7 @@ jQuery(document).ready(function($) {
 	// $.fn.on || $.fn.live is for compatibility with old jQuery versions.
 	// 1.7+ uses on and 1.3-1.7 uses live
 	($.fn.on || $.fn.live).call($document, 'focus', 'textarea[id*="quickedit_"]', function () {
-		$(this).sceditor({
-			style:			'jscripts/sceditor/jquery.sceditor.mybb.css',
-			toolbar:		'bold,italic,underline,strike,subscript,superscript|left,center,right,justify|' +
-						'font,size,color,removeformat|bulletlist,orderedlist|' +
-						'code,quote|horizontalrule,image,email,link,unlink|emoticon,youtube,date,time|' +
-						'print,source',
-			resizeMaxHeight:	800,
-			plugins:		'bbcode',
-			autofocus:		sceditor_opts.autofocus,
-			locale:			sceditor_opts.lang,
-			rtl:			null,
-			emoticons:		sceditor_opts.emoticons,
-			enablePasteFiltering:   true,
-			autofocusEnd:           true
-		});
+		$(this).sceditor(editor_opts);
 
 		if(sceditor_opts.sourcemode)
 			$(this).sceditor('instance').sourceMode(true);
