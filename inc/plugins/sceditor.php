@@ -422,8 +422,7 @@ function sceditor_load($page)
 		<link rel="stylesheet" href="jscripts/sceditor/themes/' . $mybb->settings['sceditor_theme'] . '.min.css?ver='.SCEDITOR_PLUGIN_VER.'" type="text/css" media="all" />
 		<script src="jscripts/sceditor/jquery.sceditor.bbcode.min.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>
 		' . $sceditor_lang_url . '
-		<script src="jscripts/sceditor/jquery.sceditor.mybb.helper.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>
-		<style>.sceditor-dropdown { text-align: left; } .rtl.sceditor { text-align: right; } .sceditor-button-video div {background-image:url(\'jscripts/sceditor/themes/film.png\');}</style>';
+		<script src="jscripts/sceditor/jquery.sceditor.mybb.helper.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
 
 	// strip the default editor
 	$page = str_replace(build_mycode_inserter(THIS_SCRIPT === 'usercp.php' ? 'signature' : 'message'), "", $page);
