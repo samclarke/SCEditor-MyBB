@@ -482,10 +482,9 @@ if(typeof Thread !== 'undefined')
 		return quickReplyFunc.call(this, e);
 	};
 
-	// scrollTo fix
 	Thread.quickEditLoaded = function(request, pid)
 	{
-		var message;
+		var message, $element, offset;
 
 		if(request.responseText.match(/<error>(.*)<\/error>/))
 		{
@@ -501,14 +500,15 @@ if(typeof Thread !== 'undefined')
 		}
 		else if(request.responseText)
 		{
-// Add newline if has val?
-			jQuery('pid_'+pid).innerHTML = request.responseText;
+			jQuery('#pid_'+pid).html(request.responseText);
 
-			var element = jQuery('#quickedit_' + pid);
+			$element = jQuery('#quickedit_' + pid);
+
 			// get the textarea offset before it gets hidden by the editor
-			var offset = element.offset().top-100;
+			offset = $element.offset().top - 60;
+
 			// automatically trigger the editor by focusing the textarea
-			element.focus();
+			$element.focus();
 
 			// elegantly scroll to the editor
 			jQuery('html, body').animate({
@@ -516,17 +516,11 @@ if(typeof Thread !== 'undefined')
 			}, 700);
 		}
 
-		Thread.clearMultiQuoted();
-		$('quickreply_multiquote').hide();
-		$('quoted_ids').value = 'all';
-
 		if(this.spinner)
 		{
 			this.spinner.destroy();
 			this.spinner = '';
 		}
-
-		jQuery('message').focus();
 	};
 
 
