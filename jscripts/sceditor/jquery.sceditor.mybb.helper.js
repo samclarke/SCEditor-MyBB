@@ -501,8 +501,8 @@ if(typeof Thread !== 'undefined')
 		}
 		else if(request.responseText)
 		{
-// Add newline if has val?
-			jQuery('pid_'+pid).innerHTML = request.responseText;
+			// Add newline if has val?
+			jQuery('#pid_'+pid).innerHTML = request.responseText;
 
 			var element = jQuery('#quickedit_' + pid);
 			// get the textarea offset before it gets hidden by the editor
