@@ -523,7 +523,6 @@ if(typeof Thread !== 'undefined')
 		}
 	};
 
-
 	var quickEditSaveFunc = Thread.quickEditSave;
 	// update the textarea before sending it to xmlhttp.php
 	// used for quickedit
