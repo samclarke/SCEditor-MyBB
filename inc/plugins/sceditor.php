@@ -120,6 +120,16 @@ function sceditor_install()
 	));
 
 	$db->insert_query('settings', array(
+		'name'		=> 'enablesceditor_announcement',
+		'title'		=> $lang->enablesceditor_announcement_title,
+		'description'	=> $lang->enablesceditor_announcement_desc,
+		'optionscode'	=> 'yesno',
+		'value'		=> '1',
+		'disporder'	=> '6',
+		'gid'		=> $groupid
+	));
+
+	$db->insert_query('settings', array(
 		'name'		=> 'sceditor_theme',
 		'title'		=> $lang->sceditor_theme_title,
 		'description'	=> $lang->sceditor_theme_desc,
@@ -337,6 +347,13 @@ function sceditor_load($page)
 			if($mybb->input['action'] != 'addevent' || !$mybb->settings['enablesceditor_event'])
 				return false;
 			break;
+		case 'modcp.php':
+			if($mybb->input['action'] != 'new_announcement' && $mybb->input['action'] != 'edit_announcement')
+				return false;
+
+			if(!$mybb->settings['enablesceditor_announcement'])
+				return false;
+			break;
 		default:
 			return false;
 	}
@@ -346,12 +363,12 @@ function sceditor_load($page)
 	$smilie_cache = $cache->read('smilies');
 	$smilies = array();
 	$hiddensmilies = array();
-	foreach($smilie_cache as $smilie) {
-		if($smilie['showclickable']) {
+	foreach($smilie_cache as $smilie)
+	{
+		if($smilie['showclickable'])
 			$smilies[$smilie['find']] = $smilie['image'];
-		} else {
+		else
 			$hiddensmilies[$smilie['find']] = $smilie['image'];
-		}
 	}
 
 	function smilie_len_cmp($a, $b)

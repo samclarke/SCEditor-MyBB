@@ -21,6 +21,9 @@ $l['enablesceditor_pm_desc']                  = "If to enable SCEditor on the PM
 $l['enablesceditor_event_title']              = "Enable SCEditor on Add Event page";
 $l['enablesceditor_event_desc']               = "If to enable SCEditor on the Add Event page.";
 
+$l['enablesceditor_announcement_title']       = "Enable SCEditor on Add Announcement page";
+$l['enablesceditor_announcement_desc']        = "If to enable SCEditor on the Add Announcement page.";
+
 $l['sceditor_theme_title']                    = "SCEditor theme";
 $l['sceditor_theme_desc']                     = "SCEditor theme to use.";
 
