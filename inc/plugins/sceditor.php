@@ -12,7 +12,7 @@
 if(!defined('IN_MYBB'))
 	die('You cannot directly access this file.');
 
-define('SCEDITOR_PLUGIN_VER', '1.4.4');
+define('SCEDITOR_PLUGIN_VER', '1.4.4.1');
 
 
 $plugins->add_hook('pre_output_page',         'sceditor_load', 100);
