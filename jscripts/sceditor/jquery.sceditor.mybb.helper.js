@@ -369,7 +369,7 @@ jQuery(document).ready(function($) {
 		style:			'jscripts/sceditor/jquery.sceditor.mybb.css',
 		toolbar:		'bold,italic,underline,strike,subscript,superscript|left,center,right,justify|' +
 					'font,size,color,removeformat|bulletlist,orderedlist|code,quote|horizontalrule,' +
-					'image,email,link,unlink|emoticon,video,date,time|print,source',
+					'image,email,link,unlink|emoticon,video,date,time|source',
 		resizeMaxHeight:	800,
 		rtl:			null,
 		plugins:		'bbcode',
