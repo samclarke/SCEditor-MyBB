@@ -307,15 +307,19 @@ function sceditor_load($page)
 {
 	global $lang, $mybb, $cache, $theme;
 
-	if(!$mybb->settings['enablesceditor'] || !$mybb->user['sceditor_enable'])
+	$is_guest = empty($mybb->user['username']);
+	$action   = $mybb->input['action'];
+	$settings = $mybb->settings;
+
+	if(!$settings['enablesceditor'] || (!$is_guest && !$mybb->user['sceditor_enable']))
 		return false;
 
 	// check if editor should be enabled on this theme
-	if(strrpos(',' . strtolower($mybb->settings['sceditor_excluded_themes']) . ',', ',' . strtolower($theme['name']) . ',') !== false)
+	if(strrpos(',' . strtolower($settings['sceditor_excluded_themes']) . ',', ',' . strtolower($theme['name']) . ',') !== false)
 		return false;
 
 	// Make insert method pass the src along with the code
-	if(THIS_SCRIPT == 'misc.php' && $mybb->input['action'] == 'smilies')
+	if(THIS_SCRIPT == 'misc.php' && $action == 'smilies')
 	{
 		$page = str_replace('function insertSmilie(code)', 'function insertSmilie(code, src)', $page);
 		$page = str_replace('editor.performInsert(code, "", true, false);', 'editor.performInsert(code, src);', $page);
@@ -328,36 +332,38 @@ function sceditor_load($page)
 		case 'newreply.php':
 		case 'newthread.php':
 		case 'editpost.php':
-			if(!$mybb->settings['enablesceditor_newpost'])
+			if(!$settings['enablesceditor_newpost'])
 				return false;
 			break;
 		case 'showthread.php':
-			if(!$mybb->settings['enablesceditor_quickreply'])
+			if(!$settings['enablesceditor_quickreply'])
 				return false;
 			break;
 		case 'usercp.php':
-			if($mybb->input['action'] != 'editsig' || !$mybb->settings['enablesceditor_signature'])
+			if($action !== 'editsig' || !$settings['enablesceditor_signature'])
 				return false;
 			break;
 		case 'private.php':
-			if(!$mybb->settings['enablesceditor_pm'])
+			if(!$settings['enablesceditor_pm'])
 				return false;
 			break;
 		case 'calendar.php':
-			if($mybb->input['action'] != 'addevent' || !$mybb->settings['enablesceditor_event'])
+			if($action !== 'addevent' || !$settings['enablesceditor_event'])
 				return false;
 			break;
 		case 'modcp.php':
-			if($mybb->input['action'] != 'new_announcement' && $mybb->input['action'] != 'edit_announcement')
+			if($action !== 'new_announcement' && $action !== 'edit_announcement' && $action !== 'editprofile')
 				return false;
 
-			if(!$mybb->settings['enablesceditor_announcement'])
+			if($action === 'editprofile' && !$settings['enablesceditor_signature'])
 				return false;
+			if($action !== 'editprofile' && !$settings['enablesceditor_announcement'])
+				return false;
+
 			break;
 		default:
 			return false;
 	}
-
 
 	// sort and output emoticons
 	$smilie_cache = $cache->read('smilies');
@@ -387,14 +393,15 @@ function sceditor_load($page)
 
 
 
-	$jqueryNoConflict   = '';
+	$jquery_no_conflict = '';
 	$sceditor_lang_url  = '';
 	$jquery             = '';
-	$sceditor_lang      = ($mybb->settings['sceditor_lang'] === 'default' ? 'en' : $mybb->settings['sceditor_lang']);
+	$sourcemode         = $is_guest ? 'false' : $mybb->user['sceditor_sourcemode'];
+	$sceditor_lang      = ($settings['sceditor_lang'] === 'default' ? 'en' : $settings['sceditor_lang']);
 	$mybb_emoticons     = json_encode(array( 'dropdown' => $smilies, 'hidden' => $hiddensmilies ));
-	$sceditor_autofocus = (THIS_SCRIPT != "showthread.php" ? 'true' : 'false');
-	$limit_font_tag     = $mybb->settings['sceditor_limit_font'] ? 'true' : 'false';
-	$partial_mode       = $mybb->settings['sceditor_partial_mode'] ? 'true' : 'false';
+	$sceditor_autofocus = (THIS_SCRIPT != 'showthread.php' ? 'true' : 'false');
+	$limit_font_tag     = $settings['sceditor_limit_font'] ? 'true' : 'false';
+	$partial_mode       = $settings['sceditor_partial_mode'] ? 'true' : 'false';
 	$available_locales  = array(
 		'en',
 		'en-US',
@@ -422,39 +429,39 @@ function sceditor_load($page)
 	if(in_array($lang->settings['htmllang'], $available_locales))
 		$sceditor_lang = $lang->settings['htmllang'];
 
-	// en-GB is just called en by SCEditor
+	// en-GB is just called en in SCEditor
 	if($sceditor_lang === 'en-GB')
 		$sceditor_lang = 'en';
 
-	if($mybb->settings['sceditor_include_jquery'])
+	if($settings['sceditor_include_jquery'])
 		$jquery = '<script src="jscripts/sceditor/jquery-1.8.2.min.js"></script>';
 
-	if($mybb->settings['sceditor_include_jquery'] && $mybb->settings['sceditor_enable_jquery_noconflict'])
-		$jqueryNoConflict = '$.noConflict();';
+	if($settings['sceditor_include_jquery'] && $settings['sceditor_enable_jquery_noconflict'])
+		$jquery_no_conflict = '$.noConflict();';
 
 	if($sceditor_lang !== 'default')
 		$sceditor_lang_url = '<script src="jscripts/sceditor/languages/' . $sceditor_lang . '.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
 
 	$js = '	' . $jquery . '
 		<script>
-			' . $jqueryNoConflict  . '
+			' . $jquery_no_conflict  . '
 			var sceditor_opts = {
 				lang:        "' . $sceditor_lang . '",
 				emoticons:   '  . $mybb_emoticons . ',
 				autofocus:   '  . $sceditor_autofocus . ',
-				lang:        "' . $sceditor_lang . '",
 				limitfont:   '  . $limit_font_tag . ',
 				partialmode: '  . $partial_mode . ',
-				sourcemode:  '  . $mybb->user['sceditor_sourcemode'] . '
+				sourcemode:  '  . $sourcemode . '
 			};
 		</script>
-		<link rel="stylesheet" href="jscripts/sceditor/themes/' . $mybb->settings['sceditor_theme'] . '.min.css?ver='.SCEDITOR_PLUGIN_VER.'" type="text/css" media="all" />
+		<link rel="stylesheet" href="jscripts/sceditor/themes/' . $settings['sceditor_theme'] . '.min.css?ver='.SCEDITOR_PLUGIN_VER.'" type="text/css" media="all" />
 		<script src="jscripts/sceditor/jquery.sceditor.bbcode.min.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>
 		' . $sceditor_lang_url . '
 		<script src="jscripts/sceditor/jquery.sceditor.mybb.helper.js?ver='.SCEDITOR_PLUGIN_VER.'"></script>';
 
 	// strip the default editor
-	$page = str_replace(build_mycode_inserter(THIS_SCRIPT === 'usercp.php' ? 'signature' : 'message'), "", $page);
+	$page = str_replace(build_mycode_inserter('signature'), '', $page);
+	$page = str_replace(build_mycode_inserter('message'), '', $page);
 
 	// Add the editors JS to the bottom of the page
 	return str_replace('</body>', $js . '</body>', $page);
@@ -464,11 +471,13 @@ function sceditor_sidebar_emoticons()
 {
 	global $mybb;
 
+	$is_guest = empty($mybb->user['username']);
+
 	if(THIS_SCRIPT === 'usercp.php')
 		if($myb->input['action'] != 'editsig' || !$mybb->settings['enablesceditor_signature'])
 			return false;
 
-	if($mybb->settings['enablesceditor'] && $mybb->user['sceditor_enable'])
+	if($mybb->settings['enablesceditor'] && (!$is_guest && !$mybb->user['sceditor_enable']))
 		$mybb->user['showcodebuttons'] = $mybb->settings['sceditor_enable_sidebar_emoticons'];
 }
 

@@ -4,6 +4,7 @@ jQuery(document).ready(function($) {
 	'use strict';
 
 	var $document = $(document);
+	var textareaSelector = '#message, #signature';
 
 
 	/***********************
@@ -379,7 +380,7 @@ jQuery(document).ready(function($) {
 		autofocusEnd:           true
 	};
 
-	$('#message, #signature').sceditor(editor_opts);
+	$(textareaSelector).sceditor(editor_opts);
 
 
 
@@ -387,7 +388,7 @@ jQuery(document).ready(function($) {
 	 * Source mode option support *
 	 ******************************/
 	if(sceditor_opts.sourcemode)
-		$('#message, #signature').sceditor('instance').sourceMode(true);
+		$(textareaSelector).sceditor('instance').sourceMode(true);
 
 
 
@@ -412,7 +413,7 @@ jQuery(document).ready(function($) {
 		$(this).css('cursor', 'pointer');
 
 		$(this).click(function() {
-			$('#message, #signature').data('sceditor').insert($(this).attr('alt'));
+			$(textareaSelector).data('sceditor').insert($(this).attr('alt'));
 			return false;
 		});
 	});
@@ -425,11 +426,11 @@ jQuery(document).ready(function($) {
 	var $checkbox = $('input[name=postoptions\\[disablesmilies\\]], input[name=options\\[disablesmilies\\]]');
 
 	$checkbox.change(function() {
-		$('#message, #signature').sceditor('instance').emoticons(!this.checked);
+		$(textareaSelector).sceditor('instance').emoticons(!this.checked);
 	});
 
 	if($checkbox.length)
-		$('#message, #signature').sceditor('instance').emoticons(!$checkbox[0].checked);
+		$(textareaSelector).sceditor('instance').emoticons(!$checkbox[0].checked);
 
 
 
@@ -437,11 +438,11 @@ jQuery(document).ready(function($) {
 	 * clickableEditor compat functions *
 	 ************************************/
 	clickableEditor.insertAttachment = function(aid) {
-		$('#message, #signature').data('sceditor').insertText('[attachment='+aid+']');
+		$(textareaSelector).data('sceditor').insertText('[attachment='+aid+']');
 	};
 
 	clickableEditor.performInsert = function(code) {
-		$('#message, #signature').data('sceditor').insert(code);
+		$(textareaSelector).data('sceditor').insert(code);
 	};
 
 	clickableEditor.openGetMoreSmilies = function(editor)
@@ -454,11 +455,11 @@ jQuery(document).ready(function($) {
 	/****************************
 	 * Form reset compatibility *
 	 ****************************/
-	var textarea = $('#message, #signature').get(0);
+	var textarea = $(textareaSelector).get(0);
 	if(textarea)
 	{
 		$(textarea.form).bind('reset', function() {
-			$('#message, #signature').data('sceditor').val('').emoticons(true);
+			$(textareaSelector).data('sceditor').val('').emoticons(true);
 		});
 	}
 });
@@ -474,7 +475,7 @@ if(typeof Thread !== 'undefined')
 	// update the textarea to the editors value before the Thread class
 	// uses it for quickReply, ect.
 	Thread.quickReply = function(e) {
-		var editor = jQuery('#message, #signature').data('sceditor');
+		var editor = jQuery(textareaSelector).data('sceditor');
 
 		if(editor)
 			editor.updateOriginal();
@@ -549,11 +550,11 @@ if(typeof Thread !== 'undefined')
 				this.spinner = '';
 			}
 
-			alert('There was an error fetching the posts.\n\n'+(message[1] || "An unknown error occurred."));
+			alert('There was an error fetching the posts.\n\n'+(message[1] || 'An unknown error occurred.'));
 		}
 		else if(request.responseText)
 		{
-			editor = jQuery("#message, #signature").data("sceditor");
+			editor = jQuery(textareaSelector).sceditor('instance');
 
 			if(editor)
 				editor.insert(request.responseText);
