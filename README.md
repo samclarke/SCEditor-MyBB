@@ -14,6 +14,11 @@ Releases can be downloaded from the [releases page](https://github.com/samclarke
 All the plugin settings can be changed by going to `Admin CP -> Configuration -> Settings -> SCEditor`.
 
 
+### Reporting issues
+
+If you find any bugs with this plugin please report them to the [GitHub issues page](https://github.com/samclarke/SCEditor-MyBB/issues/).
+
+
 ## License
 
 SCEditor MyBB plugin is licensed under the [GNU GPL](http://www.gnu.org/licenses/gpl.html) license.
