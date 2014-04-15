@@ -434,7 +434,7 @@ function sceditor_load($page)
 		$sceditor_lang = 'en';
 
 	if($settings['sceditor_include_jquery'])
-		$jquery = '<script src="jscripts/sceditor/jquery-1.8.2.min.js"></script>';
+		$jquery = '<script src="jscripts/sceditor/jquery-1.11.0.min.js"></script>';
 
 	if($settings['sceditor_include_jquery'] && $settings['sceditor_enable_jquery_noconflict'])
 		$jquery_no_conflict = '$.noConflict();';
