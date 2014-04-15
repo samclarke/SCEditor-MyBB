@@ -4,7 +4,7 @@
  *
  * @author Sam Clarke
  * @created 22/06/12
- * @version 1.4.4
+ * @version 1.4.5
  * @contact sam@sceditor.com
  * @license GPL
  */
@@ -12,7 +12,7 @@
 if(!defined('IN_MYBB'))
 	die('You cannot directly access this file.');
 
-define('SCEDITOR_PLUGIN_VER', '1.4.4.1');
+define('SCEDITOR_PLUGIN_VER', '1.4.5');
 
 
 $plugins->add_hook('pre_output_page',         'sceditor_load', 100);
